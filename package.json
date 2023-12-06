@@ -1,0 +1,24 @@
+{
+  "name": "node-agent-customer",
+  "version": "1.0.0",
+  "description": "test system for agent and customer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "jaydeeppedhadiya",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.9",
+    "express": "^4.17.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^6.3.4",
+    "express-validator": "^6.9.2"
+  }
+}
