@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../../config/database');
 
-const Agent = sequelize.define('agents', {
+const Customer = sequelize.define('customers', {
 		id: {
 			type: DataTypes.INTEGER,
 			autoIncrement: true,
@@ -16,7 +16,7 @@ const Agent = sequelize.define('agents', {
             type: DataTypes.STRING,
             allowNull: false
         },
-		email: {
+        email: {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
@@ -32,24 +32,6 @@ const Agent = sequelize.define('agents', {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-		customer_rating: {
-			type: DataTypes.INTEGER,
-			allowNull: true
-		},
-		reliability: {
-			type: DataTypes.INTEGER,
-			allowNull: true
-		},
-		distance: {
-			type: DataTypes.INTEGER,
-			allowNull: true
-		},
-		order_qty: {
-			type: DataTypes.INTEGER,
-			allowNull: true
-		},
-
-
   	});
 
-module.exports = Agent;
+module.exports = Customer;

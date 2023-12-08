@@ -1,0 +1,110 @@
+
+<div class="container">
+    <div class="row mt-4 align-items-center h-100">
+        <div class="col-md-4 m-auto">
+                
+            <div class="col-md-12">
+                <h3>
+                    <a class="text-decoration-none" href="/">Home</a> / 
+                    Add Agent
+                </h3>
+            </div>
+
+            <!-- error message -->
+            <% if(typeof alert != 'undefined') { %>
+                <% alert.forEach(function(error) { %>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <%= error.msg %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                <% }) %>
+            <% } %>
+
+            <!-- success message -->
+            <% if(typeof success_msg != 'undefined') { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= success_msg %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            <% } %>
+
+            <!-- add agent form -->
+            <div class="col-md-12">
+                <form class="mt-4" method="post" action="/agent">
+                    <div class="form-group mt-3">
+                        <label for="first_name">First Name<sup>*</sup></label>
+                        <input type="text" class="form-control" name="first_name" id="first_name"  placeholder="Enter First Name" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="last_name">Last Name<sup>*</sup></label>
+                        <input type="text" class="form-control" name="last_name" id="last_name"  placeholder="Enter Last Name" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="email">Email<sup>*</sup></label>
+                        <input type="email" class="form-control" name="email" id="email"  placeholder="Enter Email" value="<%= typeof email != 'undefined' ? email : '' %>">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="address">Address<sup>*</sup></label>
+                        <input type="text" class="form-control" name="address" id="address"  placeholder="Enter Address" value="<%= typeof address != 'undefined' ? address : '' %>">
+                        <input type="hidden" name="lat" id="lat" value="<%= typeof lat != 'undefined' ? lat : '' %>">
+                        <input type="hidden" name="lng" id="lng" value="<%= typeof lng != 'undefined' ? lng : '' %>">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="distance">Distance I agree to travel (kms)<sup>*</sup></label>
+                        <input type="number" class="form-control" name="distance" id="distance"  placeholder="Enter distance (kms)" value="<%= typeof distance != 'undefined' ? distance : '10' %>">
+                    </div>
+                    <div class="form-group mt-3">
+                        <a class="btn btn-info">Availibility</a>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="customer-rating">Customer rating</label>
+                        <select class="form-control" name="customer-rating" id="customer-rating">
+                            <option value="1" <%= typeof customer_rating != 'undefined' && customer_rating == 1 ? 'selected' : '' %>>1 Star</option>
+                            <option value="2" <%= typeof customer_rating != 'undefined' && customer_rating == 2 ? 'selected' : '' %>>2 Star</option>
+                            <option value="3" <%= typeof customer_rating != 'undefined' && customer_rating == 3 ? 'selected' : '' %>>3 Star</option>
+                            <option value="4" <%= typeof customer_rating != 'undefined' && customer_rating == 4 ? 'selected' : '' %>>4 Star</option>
+                            <option value="5" <%= typeof customer_rating != 'undefined' && customer_rating == 5 ? 'selected' : '' %>>5 Star</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="reliability">Reliability</label>
+                        <select class="form-control" name="reliability" id="reliability">
+                            <option value="1" <%= typeof reliability != 'undefined' && reliability == 1 ? 'selected' : '' %>>1 Star</option>
+                            <option value="2" <%= typeof reliability != 'undefined' && reliability == 2 ? 'selected' : '' %>>2 Star</option>
+                            <option value="3" <%= typeof reliability != 'undefined' && reliability == 3 ? 'selected' : '' %>>3 Star</option>
+                            <option value="4" <%= typeof reliability != 'undefined' && reliability == 4 ? 'selected' : '' %>>4 Star</option>
+                            <option value="5" <%= typeof reliability != 'undefined' && reliability == 5 ? 'selected' : '' %>>5 Star</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="order_qty">Order Qty</label>
+                        <input type="number" class="form-control" name="order_qty" id="order_qty"  placeholder="Enter Order Qty" value="<%= typeof order_qty != 'undefined' ? order_qty : '' %>">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4 w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<%- contentFor('footer') %>
+
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_MAP_API_KEY %>&libraries=places">
+</script>
+
+<script>
+    $(document).ready(function(){
+        var input = document.getElementById('address');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        //on place change
+        autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    //set lat and lng
+                    $('#lat').val(place.geometry.location.lat());
+                    $('#lng').val(place.geometry.location.lng());
+                });
+    });
+</script>

@@ -1,0 +1,82 @@
+<div class="container">
+        <div class="row mt-4 align-items-center h-100">
+            <div class="col-md-4 m-auto">
+                    
+                <div class="col-md-12">
+                    <h3>
+                        <a class="text-decoration-none" href="/">Home</a> / 
+                        Add Customer
+                    </h3>
+                </div>
+
+                <!-- error message -->
+                <% if(typeof alert != 'undefined') { %>
+                    <!-- show only first alert -->
+                    <% alert.forEach(function(error) { %>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <%= error.msg %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                    <% }) %>
+                <% } %>
+
+                <!-- success message -->
+                <% if(typeof success_msg != 'undefined') { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= success_msg %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                <% } %>
+
+                <!-- add customer form -->
+                <div class="col-md-12">
+                    <form class="mt-4" method="post" action="/customer">
+                        <div class="form-group mt-3">
+                            <label for="first_name">First Name<sup>*</sup></label>
+                            <input type="text" class="form-control" name="first_name" id="first_name"  placeholder="Enter First Name" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="last_name">Last Name<sup>*</sup></label>
+                            <input type="text" class="form-control" name="last_name" id="last_name"  placeholder="Enter Last Name" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="email">Email<sup>*</sup></label>
+                            <input type="email" class="form-control" name="email" id="email"  placeholder="Enter Email" value="<%= typeof email != 'undefined' ? email : '' %>">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="address">Address<sup>*</sup></label>
+                            <input type="text" class="form-control" name="address" id="address"  placeholder="Enter Address" value="<%= typeof address != 'undefined' ? address : '' %>">
+                            <input type="hidden" name="lat" id="lat" value="<%= typeof lat != 'undefined' ? lat : '' %>">
+                            <input type="hidden" name="lng" id="lng" value="<%= typeof lng != 'undefined' ? lng : '' %>">
+                        </div>
+                        <div class="form-group mt-3">
+                            <a class="btn btn-info">Availibility</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+
+<%- contentFor('footer') %>
+
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_MAP_API_KEY %>&libraries=places">
+</script>
+
+<script>
+    $(document).ready(function(){
+        var input = document.getElementById('address');
+
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        //on place change
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            //set lat and lng
+            $('#lat').val(place.geometry.location.lat());
+            $('#lng').val(place.geometry.location.lng());
+        });
+
+    });
+</script>
