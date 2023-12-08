@@ -91,20 +91,22 @@
 </div>
 <%- contentFor('footer') %>
 
-<script async
-    src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_MAP_API_KEY %>&libraries=places">
-</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_MAP_API_KEY %>&libraries=places&callback=initAutocomplete" async defer></script>
 
 <script>
-    $(document).ready(function(){
+    function initAutocomplete() {
         var input = document.getElementById('address');
+
         var autocomplete = new google.maps.places.Autocomplete(input);
         //on place change
         autocomplete.addListener('place_changed', function() {
-                    var place = autocomplete.getPlace();
-                    //set lat and lng
-                    $('#lat').val(place.geometry.location.lat());
-                    $('#lng').val(place.geometry.location.lng());
-                });
-    });
+            var place = autocomplete.getPlace();
+            //set lat and lng
+            $('#lat').val(place.geometry.location.lat());
+            $('#lng').val(place.geometry.location.lng());
+        });
+    }
+    
 </script>
+
