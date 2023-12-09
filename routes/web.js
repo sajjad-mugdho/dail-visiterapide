@@ -30,9 +30,7 @@ router.post('/agent', [
         .isNumeric(),
     check('lng', 'This longitude is not valid')
         .exists()
-        .isNumeric(),
-    check('order_qty', 'This order quantity is not valid')
-        .isNumeric(),
+        .isNumeric()
         
 
     
