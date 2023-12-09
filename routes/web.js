@@ -105,8 +105,8 @@ router.post('/customer', [
 
         })
     }else{
-        //if no errors register agent
-        await HomeController.agentRegister(req, res)
+        //if no errors register customer
+        await HomeController.customerRegister(req, res)
         res.render('customer', {
             success_msg: 'Customer added successfully',
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY

@@ -31,7 +31,7 @@ const Customer = sequelize.define('customers', {
 		lng: {
 			type: DataTypes.STRING,
 			allowNull: false
-		},
+		}, 
   	});
 
 module.exports = Customer;
