@@ -1,2 +1,190 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<div class="modal" tabindex="-1" role="dialog" id="calendar">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Availibility</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="saveTimeSlot()">Save changes</button>
+          <button type="button" class="btn btn-warning" onclick="resetTimeSlot()">Reset</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+
+    function resetTimeSlot(){
+        $(".timeslot").removeClass("selected");
+    }
+    function saveTimeSlot(){
+        var timeslots=[];
+        var table = $("#calendar .modal-body table");
+        var rows=table.find("tr");
+        rows.each(function(){
+            var rowCells = $(this).find("td");
+            rowCells.each(function(){
+                if($(this).hasClass("timeslot")){
+                        
+                    if($(this).hasClass("selected")){
+                        timeslots.push(1)
+                    }else{
+                        timeslots.push(0)
+                    }
+            }
+            })
+        })
+        
+        $("#availibility").val(timeslots.join(","));
+        $("#calendar").modal('hide');
+    }
+    function selectTimeSlot(){
+        var start_time="07:00";
+        var end_time="22:00";
+        var table='<table class="table table-bordered">';
+        table+='<thead>';
+        table+='<tr>';
+        table+='<th>Day</th>';
+
+        
+
+        start_time_int=parseInt(start_time.split(":")[0]);
+        end_time_int=parseInt(end_time.split(":")[0]);
+        for(var i=start_time_int;i<end_time_int;i+=0.5){
+            var time=i.toString().split(".");
+            if(time[1] == "5"){
+                time[1]="30";
+            }else{
+                time[1]="00";
+            }
+            time=time.join(":");
+            //am pm
+            if(i<12){
+                time+=" AM";
+            }else{
+                time+=" PM";
+            }
+            table+='<th>'+time+'</th>';
+        }
+        table+='</tr>';
+        table+='</thead>';
+        table+='<tbody>';
+        var days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        for(var i=0;i<days.length;i++){
+            table+='<tr>';
+            table+='<td>'+days[i]+'</td>';
+            for(var j=start_time_int;j<end_time_int;j+=0.5){
+                table+='<td class="timeslot"></td>';
+            }
+            table+='</tr>';
+        }
+        table+='</tbody>';
+        table+='</table>';
+        $("#calendar .modal-body").html(table);
+
+        var availibility=$("#availibility").val();
+        if(availibility != ""){
+            var timeslots=availibility.split(",");
+            var table = $("#calendar .modal-body table");
+            var rows=table.find("tr");
+            var index=0;
+            rows.each(function(){
+                var rowCells = $(this).find("td");
+                rowCells.each(function(){
+                    if($(this).hasClass("timeslot")){
+                        if(timeslots[index] == 1){
+                            $(this).addClass("selected");
+                        }
+                        index++;
+                }
+                })
+            })
+        }
+
+        $("#calendar").modal('show');
+    }
+
+var isMouseDown = false;
+var startRowIndex = null;
+var startCellIndex = null;
+
+function selectTo(cell) {
+    
+    var row = cell.parent();    
+    var cellIndex = cell.index();
+    var rowIndex = row.index();
+
+    var rowStart, rowEnd, cellStart, cellEnd;
+    
+    if (rowIndex < startRowIndex) {
+        rowStart = rowIndex;
+        rowEnd = startRowIndex;
+    } else {
+        rowStart = startRowIndex;
+        rowEnd = rowIndex;
+    }
+    
+    if (cellIndex < startCellIndex) {
+        cellStart = cellIndex;
+        cellEnd = startCellIndex;
+    } else {
+        cellStart = startCellIndex;
+        cellEnd = cellIndex;
+    }        
+    var table = $("#calendar .modal-body table");    
+    
+    for (var i = rowStart; i <= rowEnd; i++) {
+        var rowCells = table.find("tr").eq(i+1).find("td");
+        for (var j = cellStart; j <= cellEnd; j++) {
+            rowCells.eq(j).addClass("selected");
+            
+        }        
+    }
+}
+//get mouse clicked event and click release event
+$(document).on("mouseup", function (e) {
+    isMouseDown = false;
+})
+
+$(document).on("mousedown", "table td", function (e) {
+    isMouseDown = true;
+    var cell = $(this);
+    var table = $("#calendar .modal-body table");    
+
+    // table.find(".selected").removeClass("selected"); // deselect everything
+    if(cell.hasClass("selected")){
+        cell.removeClass("selected")
+    }else{
+        if (e.shiftKey) {
+            selectTo(cell);                
+        } else {
+            cell.addClass("selected");
+            startCellIndex = cell.index();
+            startRowIndex = cell.parent().index();
+        }
+}
+
+    return false; // prevent text selection
+})
+
+$(document).on("mouseover", "table td", function (e) {
+    if (!isMouseDown) return;
+    var table = $("#calendar .modal-body table");    
+
+    // table.find(".selected").removeClass("selected");
+
+    selectTo($(this));        
+})
+
+$(document).on("selectstart", "table td", function (e) {
+    return false;
+    
+})
+
+</script>

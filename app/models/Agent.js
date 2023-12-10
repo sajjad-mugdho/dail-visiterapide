@@ -48,6 +48,10 @@ const Agent = sequelize.define('agents', {
 			type: DataTypes.INTEGER,
 			allowNull: true
 		},
+		availibility: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
 
 
   	});

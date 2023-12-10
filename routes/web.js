@@ -53,6 +53,7 @@ router.post('/agent', [
             reliability: req.body.reliability,
             distance: req.body.distance,
             order_qty: req.body.order_qty,
+            availibility: req.body.availibility,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY
         })
     }else{
@@ -102,6 +103,7 @@ router.post('/customer', [
             address: req.body.address,
             lat: req.body.lat,
             lng: req.body.lng,
+            availibility: req.body.availibility,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY
 
         })

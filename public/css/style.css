@@ -1,0 +1,9 @@
+#calendar .modal-body{
+    overflow-x: auto;
+}
+#calendar .modal-dialog{
+    max-width: 80%;
+}
+td.selected {
+  background-color: green;
+}

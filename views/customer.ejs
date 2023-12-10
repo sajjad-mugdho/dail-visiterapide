@@ -50,7 +50,8 @@
                             <input type="hidden" name="lng" id="lng" value="<%= typeof lng != 'undefined' ? lng : '' %>">
                         </div>
                         <div class="form-group mt-3">
-                            <a class="btn btn-info">Availibility</a>
+                            <a class="btn btn-info" href="#" onclick="selectTimeSlot()">Availibility</a>
+                            <input type="hidden" name="availibility" id="availibility" value="<%= typeof availibility != 'undefined' ? availibility : '' %>">
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Submit</button>
                     </form>

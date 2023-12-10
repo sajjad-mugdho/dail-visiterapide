@@ -34,7 +34,7 @@ class HomeController {
 	// register agent
 	async agentRegister(req, res) {
 		const { first_name, last_name, email, address, lat, lng,
-			customer_rating, reliability, distance, order_qty
+			customer_rating, reliability, distance, order_qty,availibility
 		} = req.body;
 
 		// Create agent
@@ -48,7 +48,8 @@ class HomeController {
 			customer_rating,
 			reliability,
 			distance,
-			order_qty
+			order_qty,
+			availibility
 		});
 		return agent;
 	}
@@ -57,6 +58,7 @@ class HomeController {
 	// register customer
 	async customerRegister(req, res) {
 		const { first_name, last_name, email, address, lat, lng,
+			availibility
 		} = req.body;
 
 		// Create customer
@@ -66,7 +68,8 @@ class HomeController {
 			email,
 			address,
 			lat,
-			lng
+			lng,
+			availibility
 		});
 		return customer;
 	}

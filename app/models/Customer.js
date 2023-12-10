@@ -32,6 +32,10 @@ const Customer = sequelize.define('customers', {
 			type: DataTypes.STRING,
 			allowNull: false
 		}, 
+		availibility: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
   	});
 
 module.exports = Customer;
