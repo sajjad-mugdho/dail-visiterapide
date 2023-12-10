@@ -15,6 +15,8 @@ class HomeController {
 	agent(req, res) {
 		res.render('agent', {
 			title: 'Agent page',
+			customer_rating:5,
+			reliability:5,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY
 			
 		});
