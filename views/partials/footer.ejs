@@ -100,7 +100,7 @@
                 var rowCells = $(this).find("td");
                 rowCells.each(function(){
                     if($(this).hasClass("timeslot")){
-                        if(timeslots[index] == 1){
+                        if(timeslots[index] != 0){
                             $(this).addClass("selected");
                         }
                         index++;
