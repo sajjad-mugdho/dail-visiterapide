@@ -27,13 +27,15 @@
         var timeslots=[];
         var table = $("#calendar .modal-body table");
         var rows=table.find("tr");
+        var index=0;
         rows.each(function(){
             var rowCells = $(this).find("td");
             rowCells.each(function(){
+                
                 if($(this).hasClass("timeslot")){
-                        
+                    index++;        
                     if($(this).hasClass("selected")){
-                        timeslots.push(1)
+                        timeslots.push(index)
                     }else{
                         timeslots.push(0)
                     }
