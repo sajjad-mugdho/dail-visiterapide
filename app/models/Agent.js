@@ -25,11 +25,11 @@ const Agent = sequelize.define('agents', {
 			allowNull: false
 		},
 		lat: {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: false
 		},
 		lng: {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: false
 		},
 		customer_rating: {

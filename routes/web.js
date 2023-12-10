@@ -61,6 +61,8 @@ router.post('/agent', [
         await HomeController.agentRegister(req, res)
         res.render('agent', {
             success_msg: 'Agent added successfully',
+            customer_rating:5,
+			reliability:5,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY
 
         })
