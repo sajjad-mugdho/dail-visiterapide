@@ -63,6 +63,7 @@ router.post('/agent', [
             success_msg: 'Agent added successfully',
             customer_rating:5,
 			reliability:5,
+            order_qty:10,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY
 
         })
