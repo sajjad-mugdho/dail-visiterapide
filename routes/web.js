@@ -8,6 +8,12 @@ router.get('/', HomeController.home);
 
 router.get('/agent', HomeController.agent);
 router.get('/customer', HomeController.customer);
+router.get('/customers', HomeController.customers);
+router.post('/customers', HomeController.customer_search);
+
+router.get('/customer/:id', HomeController.searchAgent);
+router.post('/agent/search', HomeController.searchAgentFilter);
+
 
 // register agent
 router.post('/agent', [

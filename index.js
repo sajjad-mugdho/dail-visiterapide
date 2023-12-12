@@ -13,7 +13,7 @@ const webRoutes = require('./routes/web');
 const sequelize = require('./config/database');
 
 // parse application/json
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set views

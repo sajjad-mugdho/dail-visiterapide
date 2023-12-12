@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.semanticui.min.css" />
+<style>
+    .dataTables_length{
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mt-5 mb-5">
+            <h2><a href="/">Home</a> / Search Agent</h2>
+        </div>
+        <div class="col-md-12 mb-3">
+            <h4 class="mb-2">Customer Details</h4>
+            <div class="mb-3">
+                <div><strong>Name : </strong><%= customer.first_name %> <%= customer.last_name %></div>
+                <div><strong>Email : </strong><%= customer.email %></div>
+                <div><strong>Address : </strong><%= customer.address %></div>
+                
+
+            </div>
+               
+        </div>
+    </div>
+    <table class="table mb-3" id="agents">
+        <thead>
+            <th>Name</th>
+            <th>First name</th>
+            <th>Number of visits made</th>
+            <th>Reliability (positive response rate) /5</th>
+            <th>Customer rating (/5)</th>
+            <th>Choose the agent</th>
+        </thead>
+
+    </table>
+</div>
+
+<%- contentFor('footer') %>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        //post request
+        $("#agents").DataTable({
+            
+            
+
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "/agent/search",
+                "type": "POST"
+            },
+            "columns": [
+                { "data": "name" },
+                { "data": "first_name" },
+                { "data": "number_of_visits_made" },
+                { "data": "reliability" },
+                { "data": "customer_rating" },
+                { "data": "choose_the_agent" }
+            ]
+        });
+    })
+</script>

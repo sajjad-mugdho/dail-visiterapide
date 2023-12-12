@@ -154,7 +154,7 @@ $(document).on("mouseup", function (e) {
     isMouseDown = false;
 })
 
-$(document).on("mousedown", "table td", function (e) {
+$(document).on("mousedown", "#calendar table td", function (e) {
     isMouseDown = true;
     var cell = $(this);
     var table = $("#calendar .modal-body table");    
@@ -175,7 +175,7 @@ $(document).on("mousedown", "table td", function (e) {
     return false; // prevent text selection
 })
 
-$(document).on("mouseover", "table td", function (e) {
+$(document).on("mouseover", "#calendar table td", function (e) {
     if (!isMouseDown) return;
     var table = $("#calendar .modal-body table");    
 
@@ -184,7 +184,7 @@ $(document).on("mouseover", "table td", function (e) {
     selectTo($(this));        
 })
 
-$(document).on("selectstart", "table td", function (e) {
+$(document).on("selectstart", "#calendar table td", function (e) {
     return false;
     
 })

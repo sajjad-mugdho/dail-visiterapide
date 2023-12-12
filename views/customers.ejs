@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.9.2/semantic.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.semanticui.min.css" />
+<style>
+    .dataTables_length{
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <div class="col-md-12">
+            <h2><a href="/">Home</a> / Customers</h2>
+        </div>
+    </div>
+    <table class="table mb-3 ui celled" id="customers">
+        <thead>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Action</th>
+        </thead>
+
+    </table>
+</div>
+
+<%- contentFor('footer') %>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        //post request
+        const table=$("#customers").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "/customers",
+                "type": "POST"
+            },
+            "columns": [
+                { "data": "first_name" },
+                { "data": "last_name" },
+                { "data": "email" },
+                { "data": "address"},
+                { 
+                    "data": "action",
+                    "orderable": false,
+                    "render": function(data, type, row, meta){
+                        return '<a class="btn btn-primary" href="/customer/'+row.id+'">Show</a>';
+                    }
+                }
+            ]
+        });
+
+        $('#customers tbody').on('dblclick', 'tr', function () {
+            var data = table.row( this ).data();
+            window.location.href="/customer/"+data.id;
+            
+        });
+    })
+</script>
