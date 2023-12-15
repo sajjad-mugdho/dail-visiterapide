@@ -52,6 +52,10 @@ const Agent = sequelize.define('agents', {
 			type: DataTypes.STRING,
 			allowNull: true
 		},
+		number_of_visits_made: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
 
 
   	});
