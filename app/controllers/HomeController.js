@@ -63,11 +63,7 @@ class HomeController {
 		const customer_rating=req.body.customer_rating;
 		const reliability=req.body.reliability;
 		var hours=req.body.hours;
-		//if hours is not set then set default 2 hours
-		if(hours==undefined || hours==""){
-			hours=2;
-		}
-
+		
 		//get customer
 		const customer=await Customer.findOne({
 			where: {
@@ -160,6 +156,8 @@ class HomeController {
 				}
 				//unique array
 				availibility_query = [...new Set(availibility_query)];
+
+				console.log(availibility_query);
 				const conditions = availibility_query.map((number) => ({
 					availibility: {
 					[Op.like]: `%,${number},%`,

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const HomeController = require('../app/controllers/HomeController');
 const { check, validationResult } = require('express-validator')
+const Agent = require('../app/models/Agent');
+const Customer = require('../app/models/Customer');
 
 // home page
 router.get('/', HomeController.home);
@@ -25,7 +27,18 @@ router.post('/agent', [
         .isLength({ min: 3 }),
     check('email', 'This email is not valid')
         .exists()
-        .isEmail(),
+        .isEmail()
+        .custom((value, { req }) => {
+            return new Promise((resolve, reject) => {
+                Agent.findOne({ where: { email: req.body.email } })
+                    .then(agent => {
+                        if (agent !== null) {
+                            reject(new Error('E-mail already in use'))
+                        }
+                        resolve(true)
+                    })
+            });
+        }),
         
     check('address', 'This address must me 3+ characters long')
         .exists()
@@ -88,7 +101,18 @@ router.post('/customer', [
         .isLength({ min: 3 }),
     check('email', 'This email is not valid')
         .exists()
-        .isEmail(),
+        .isEmail()
+        .custom((value, { req }) => {
+            return new Promise((resolve, reject) => {
+                Customer.findOne({ where: { email: req.body.email } })
+                    .then(customer => {
+                        if (customer !== null) {
+                            reject(new Error('E-mail already in use'))
+                        }
+                        resolve(true)
+                    })
+            });
+        }),
     check('address', 'This address must me 3+ characters long')
         .exists()
         .isLength({ min: 3 }),
