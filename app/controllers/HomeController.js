@@ -150,9 +150,11 @@ class HomeController {
 			if(availibility_sum_all>0){
 				var availibility_query=[];
 				for(var i=0;i<availibility.length;i++){
-					for(var j=0;j<=Number(hours)*2;j++){
-						availibility_query.push(Number(availibility[i])+j);
+					var start_time=[Number(availibility[i])];
+					for(var j=1;j<Number(hours)*2;j++){
+						start_time.push(Number(availibility[i])+j);
 					}
+					availibility_query.push(start_time.join(','));
 				}
 				//unique array
 				availibility_query = [...new Set(availibility_query)];
