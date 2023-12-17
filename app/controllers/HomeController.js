@@ -127,67 +127,9 @@ class HomeController {
 				),
 			}
 		});	
+
 		
-
-		//check availibility
-		if(customer.availibility!=""){
-			var availibility=customer.availibility.split(',');
-			var availibility_sum_all=availibility.reduce((a, b) => Number(a) + Number(b), 0);
-			//remove 0 from array
-			availibility = availibility.filter(function (el) {
-				return el != 0;
-			});
-
-			//availibility group by sequence
-			var availibility_group=[];
-			var availibility_group_temp=[];
-			for(var i=0;i<availibility.length;i++){
-				if(availibility[i+1]==Number(availibility[i])+1){
-					availibility_group_temp.push(availibility[i]);
-				}else{
-					availibility_group_temp.push(availibility[i]);
-					availibility_group.push(availibility_group_temp);
-					availibility_group_temp=[];
-				}
-			}
-
-			//for each availibility group check if hours is available
-			//if not remove from array
-			for(var i=0;i<availibility_group.length;i++){
-				if(availibility_group[i].length<Number(hours)*2){
-					//remove those hours from availibility
-					for(var j=0;j<availibility_group[i].length;j++){
-						availibility.splice(availibility.indexOf(availibility_group[i][j]), 1);
-					}
-					availibility_group.splice(i, 1);
-				}
-			}
-
-			if(availibility_sum_all>0){
-				var availibility_query=[];
-				for(var i=0;i<availibility.length;i++){
-					var start_time=[Number(availibility[i])];
-					for(var j=1;j<Number(hours)*2;j++){
-						start_time.push(Number(availibility[i])+j);
-					}
-					availibility_query.push(start_time.join(','));
-				}
-				//unique array
-				availibility_query = [...new Set(availibility_query)];
-				
-				console.log(availibility_query);
-				const conditions = availibility_query.map((number) => ({
-					availibility: {
-					[Op.like]: `%,${number},%`,
-					},
-				}));
-				
-				
-				filters.push({
-					[Op.or]: conditions,
-				});
-			}
-		}
+		
 
 		var data=await Agent.findAll({
 			offset: parseInt(skip),
@@ -196,27 +138,39 @@ class HomeController {
 			order: [[sort_column, dir]]
 		});
 
-		var total=await Agent.count({
-			where: {
-				distance: {
-				  [Op.gte]: Sequelize.literal(
-					`(
-					  6371 * acos(
-						cos(radians(${targetLat})) * cos(radians(lat)) * cos(radians(lng) - radians(${targetLng})) +
-						sin(radians(${targetLat})) * sin(radians(lat))
-					  )
-					)`
-				  ),
-				},
-			},
-		});
-		var filtered=await Agent.count({
-			where: filters
-		});
+		for (var i=0;i<data.length;i++){
+			var agent=data[i];
+			
+
+			//check availibility
+			if(customer.availibility!="" && agent.availibility!=""){
+				var availibility=customer.availibility.split(',');
+				//remove 0 from array
+				availibility = availibility.filter(function (el) {
+					return el != 0;
+				});
+
+				var agent_availibility=agent.availibility.split(',');
+				//remove 0 from array
+				agent_availibility = agent_availibility.filter(function (el) {
+					return el != 0;
+				});
+
+				//find common availibility
+				var common_availibility=availibility.filter(value => agent_availibility.includes(value));
+				if(common_availibility.length==0 || common_availibility.length<Number(hours)*2){
+					data.splice(i, 1);
+					i--;
+					continue;
+				}
+			}
+		}
+		
+		
 		return res.json({
 			"draw": req.body.draw,
-			"recordsTotal": total,
-			"recordsFiltered": filtered,
+			"recordsTotal": data.length,
+			"recordsFiltered": data.length,
 			"data": data
 		});
 		
