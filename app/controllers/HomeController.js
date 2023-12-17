@@ -59,7 +59,6 @@ class HomeController {
 		const column=req.body.order[0].column;
 		const sort_column=req.body.columns[column].data;
 		const customer_id=req.body.customer_id;
-		const distance=req.body.distance;
 		const customer_rating=req.body.customer_rating;
 		const reliability=req.body.reliability;
 		var hours=req.body.hours;
@@ -115,29 +114,20 @@ class HomeController {
 		
 		var targetLat=customer.lat;
 		var targetLng=customer.lng;
-		if(distance!=""){
-			filters.push( Sequelize.literal(
+		
+		filters.push({
+			distance: {
+				[Op.gte]: Sequelize.literal(
 				`(
-				  6371 * acos(
+					6371 * acos(
 					cos(radians(${targetLat})) * cos(radians(lat)) * cos(radians(lng) - radians(${targetLng})) +
 					sin(radians(${targetLat})) * sin(radians(lat))
-				  )
-				) <= ${Number(distance)}`
-			  ),);	
-		}else{
-			filters.push({
-				distance: {
-				  [Op.gte]: Sequelize.literal(
-					`(
-					  6371 * acos(
-						cos(radians(${targetLat})) * cos(radians(lat)) * cos(radians(lng) - radians(${targetLng})) +
-						sin(radians(${targetLat})) * sin(radians(lat))
-					  )
-					)`
-				  ),
-				}
-			});	
-		}
+					)
+				)`
+				),
+			}
+		});	
+		
 
 		//check availibility
 		if(customer.availibility!=""){
