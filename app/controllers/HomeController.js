@@ -137,6 +137,32 @@ class HomeController {
 			availibility = availibility.filter(function (el) {
 				return el != 0;
 			});
+
+			//availibility group by sequence
+			var availibility_group=[];
+			var availibility_group_temp=[];
+			for(var i=0;i<availibility.length;i++){
+				if(availibility[i+1]==Number(availibility[i])+1){
+					availibility_group_temp.push(availibility[i]);
+				}else{
+					availibility_group_temp.push(availibility[i]);
+					availibility_group.push(availibility_group_temp);
+					availibility_group_temp=[];
+				}
+			}
+
+			//for each availibility group check if hours is available
+			//if not remove from array
+			for(var i=0;i<availibility_group.length;i++){
+				if(availibility_group[i].length<Number(hours)*2){
+					//remove those hours from availibility
+					for(var j=0;j<availibility_group[i].length;j++){
+						availibility.splice(availibility.indexOf(availibility_group[i][j]), 1);
+					}
+					availibility_group.splice(i, 1);
+				}
+			}
+
 			if(availibility_sum_all>0){
 				var availibility_query=[];
 				for(var i=0;i<availibility.length;i++){
@@ -148,7 +174,7 @@ class HomeController {
 				}
 				//unique array
 				availibility_query = [...new Set(availibility_query)];
-
+				
 				console.log(availibility_query);
 				const conditions = availibility_query.map((number) => ({
 					availibility: {
