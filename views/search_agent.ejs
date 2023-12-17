@@ -61,6 +61,7 @@
             <th>Number of visits made</th>
             <th>Reliability (positive response rate) /5</th>
             <th>Customer rating (/5)</th>
+            <th>Distance I agree to travel (kms)*</th>
             <th>Choose the agent</th>
         </thead>
 
@@ -102,6 +103,9 @@
                         },
                         { "data": "reliability" },
                         { "data": "customer_rating" },
+                        { "data": "distance", "render": function(data, type, row, meta){
+                            return data + " kms";
+                        } },
                         { 
                             "data": "choose_the_agent" ,
                             "render": function(data, type, row, meta){
