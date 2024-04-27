@@ -4,16 +4,19 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Select Availibility</h5>
+          <h5 class="modal-title">Disponibilités - Cocher les heures où
+            vous êtes disponible pour les visites. Vous pouvez
+            sélectionner plusieurs cases en gardant le bouton
+            appuyé.
+            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="saveTimeSlot()">Save changes</button>
-          <button type="button" class="btn btn-warning" onclick="resetTimeSlot()">Reset</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-submit" onclick="saveTimeSlot()">Valider</button>
+          <button type="button" class="btn btn-warning" onclick="resetTimeSlot()">Réinitialiser</button>
         </div>
       </div>
     </div>
@@ -92,8 +95,8 @@
         // var table = '<table>';
         table += '<thead>';
         table += '<tr>';
-        var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        table += '<th>Day</th>';
+        var days = ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'];
+        table += '<th>Horaire</th>';
         for (var i = 0; i < days.length; i++) {
             table += '<th>' + days[i] + '</th>';
         }
@@ -111,11 +114,11 @@
             }
             time = time.join(":");
             //am pm
-            if (i < 12) {
-                time += " AM";
-            } else {
-                time += " PM";
-            }
+            // if (i < 12) {
+            //     time += " AM";
+            // } else {
+            //     time += " PM";
+            // }
             table += '<tr>';
             table += '<td>' + time + '</td>';
             for (var j = 0; j < days.length; j++) {

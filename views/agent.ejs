@@ -1,15 +1,14 @@
 
 <div class="container">
-    <div class="row mt-4 align-items-center h-100">
-        <div class="col-md-6 m-auto">
-                
-            <div class="col-md-12">
-                <h3>
-                    <a class="text-decoration-none" href="/">Home</a> / 
-                    Add Agent
-                </h3>
-            </div>
+    <form class="mt-4" method="post" action="/agent">
 
+    <div class="row mt-4  h-100">
+        <div class="col-md-12">
+            <h3>
+                <a class="text-decoration-none" href="/">Tableau de bord</a> / Ajouter un Agent
+            </h3>
+        </div>
+        <div class="col-md-6 m-auto">
             <!-- error message -->
             <% if(typeof alert != 'undefined') { %>
                 <% alert.forEach(function(error) { %>
@@ -30,130 +29,183 @@
 
             <!-- add agent form -->
             <div class="col-md-12">
-                <form class="mt-4" method="post" action="/agent">
                     <div class="row">
                         <div class="col-md-6">
                             
                             <div class="form-group mt-3">
-                                <label for="first_name">First Name<sup>*</sup></label>
-                                <input type="text" class="form-control" name="first_name" id="first_name"  placeholder="Enter First Name" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
+                                <label for="first_name">Prénom<sup>*</sup></label>
+                                <input type="text" class="form-control" name="first_name" id="first_name"  placeholder="Entrez votre prénom" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
                             </div>
                         </div>
                         <div class="col-md-6">
                             
                             <div class="form-group mt-3">
-                                <label for="last_name">Last Name<sup>*</sup></label>
-                                <input type="text" class="form-control" name="last_name" id="last_name"  placeholder="Enter Last Name" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
+                                <label for="last_name">Nom de famille<sup>*</sup></label>
+                                <input type="text" class="form-control" name="last_name" id="last_name"  placeholder="Entrer le nom de famille" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
                             </div>
                         </div>
                     </div>
                     <div class="form-group mt-3">
-                        <label for="email">Email<sup>*</sup></label>
-                        <input type="email" class="form-control" name="email" id="email"  placeholder="Enter Email" value="<%= typeof email != 'undefined' ? email : '' %>">
+                        <label for="email">E-mail<sup>*</sup></label>
+                        <input type="email" class="form-control" name="email" id="email"  placeholder="Entrez l'e-mail" value="<%= typeof email != 'undefined' ? email : '' %>">
                     </div>
-                    <div class="form-group mt-3">
-                        <label for="password">Password<sup>*</sup></label>
-                        <input required  type="password" class="form-control" name="password" id="password"  placeholder="Enter Password" value="<%= typeof password != 'undefined' ? password : '' %>">
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="phone">Phone<sup>*</sup></label>
-                        <input required  type="tel" pattern="[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" class="form-control" name="phone" id="phone"  placeholder="Enter Phone" value="<%= typeof phone != 'undefined' ? phone : '' %>">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-3">
+                                <label for="password">Mot de passe<sup>*</sup></label>
+                                <input required  type="password" class="form-control" name="password" id="password"  placeholder="Entrer le mot de passe" value="<%= typeof password != 'undefined' ? password : '' %>">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            
+                            <div class="form-group mt-3">
+                                <label for="phone">Téléphone<sup>*</sup></label>
+                                <input required  type="tel" pattern="[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" class="form-control" name="phone" id="phone"  placeholder="Entrez le téléphone" value="<%= typeof phone != 'undefined' ? phone : '' %>">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="address">Address<sup>*</sup></label>
-                        <input type="text" class="form-control" name="address" id="address"  placeholder="Enter Address" value="<%= typeof address != 'undefined' ? address : '' %>">
+                        <label for="address">Adresse<sup>*</sup></label>
+                        <input type="text" class="form-control" name="address" id="address"  placeholder="Entrer l'adresse" value="<%= typeof address != 'undefined' ? address : '' %>">
                         <input type="hidden" name="lat" id="lat" value="<%= typeof lat != 'undefined' ? lat : '' %>">
                         <input type="hidden" name="lng" id="lng" value="<%= typeof lng != 'undefined' ? lng : '' %>">
                     </div>
                     <div class="form-group mt-3">
-                        <label for="distance">Distance I agree to travel (kms)<sup>*</sup></label>
-                        <input type="number" class="form-control" name="distance" id="distance"  placeholder="Enter distance (kms)" value="<%= typeof distance != 'undefined' ? distance : '10' %>">
+                        <label for="distance">Distance que j'accepte de parcourir (kms)<sup>*</sup></label>
+                        <input type="number" class="form-control" name="distance" id="distance"  placeholder="Entrez la distance (km)" value="<%= typeof distance != 'undefined' ? distance : '10' %>">
                     </div>
                     <div class="form-group mt-3">
-                        <a class="btn btn-info" href="#" onclick="selectTimeSlot()">Availibility</a>
+                        <a class="btn btn-info" href="#" onclick="selectTimeSlot()">Disponibilités</a>
                         <input type="hidden" name="availibility" id="availibility" value="<%= typeof availibility != 'undefined' ? availibility : '' %>">
                     </div>
-
-                    <div class="form-group mt-3">
-                        <label for="customer-rating">Customer rating</label>
-                        <select class="form-control" name="customer_rating" id="customer_rating">
-                            <option value="1" <%= typeof customer_rating != 'undefined' && customer_rating == 1 ? 'selected' : '' %>>1 Star</option>
-                            <option value="2" <%= typeof customer_rating != 'undefined' && customer_rating == 2 ? 'selected' : '' %>>2 Star</option>
-                            <option value="3" <%= typeof customer_rating != 'undefined' && customer_rating == 3 ? 'selected' : '' %>>3 Star</option>
-                            <option value="4" <%= typeof customer_rating != 'undefined' && customer_rating == 4 ? 'selected' : '' %>>4 Star</option>
-                            <option value="5" <%= typeof customer_rating != 'undefined' && customer_rating == 5 ? 'selected' : '' %>>5 Star</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mt-3">
+                                <label for="customer-rating">Évaluation du client</label>
+                                <select class="form-control" name="customer_rating" id="customer_rating">
+                                    <option value="1" <%= typeof customer_rating != 'undefined' && customer_rating == 1 ? 'selected' : '' %>>1 Star</option>
+                                    <option value="2" <%= typeof customer_rating != 'undefined' && customer_rating == 2 ? 'selected' : '' %>>2 Star</option>
+                                    <option value="3" <%= typeof customer_rating != 'undefined' && customer_rating == 3 ? 'selected' : '' %>>3 Star</option>
+                                    <option value="4" <%= typeof customer_rating != 'undefined' && customer_rating == 4 ? 'selected' : '' %>>4 Star</option>
+                                    <option value="5" <%= typeof customer_rating != 'undefined' && customer_rating == 5 ? 'selected' : '' %>>5 Star</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mt-3">
+                                <label for="reliability">Fiabilité</label>
+                                <select class="form-control" name="reliability" id="reliability">
+                                    <option value="1" <%= typeof reliability != 'undefined' && reliability == 1 ? 'selected' : '' %>>1 Star</option>
+                                    <option value="2" <%= typeof reliability != 'undefined' && reliability == 2 ? 'selected' : '' %>>2 Star</option>
+                                    <option value="3" <%= typeof reliability != 'undefined' && reliability == 3 ? 'selected' : '' %>>3 Star</option>
+                                    <option value="4" <%= typeof reliability != 'undefined' && reliability == 4 ? 'selected' : '' %>>4 Star</option>
+                                    <option value="5" <%= typeof reliability != 'undefined' && reliability == 5 ? 'selected' : '' %>>5 Star</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="reliability">Reliability</label>
-                        <select class="form-control" name="reliability" id="reliability">
-                            <option value="1" <%= typeof reliability != 'undefined' && reliability == 1 ? 'selected' : '' %>>1 Star</option>
-                            <option value="2" <%= typeof reliability != 'undefined' && reliability == 2 ? 'selected' : '' %>>2 Star</option>
-                            <option value="3" <%= typeof reliability != 'undefined' && reliability == 3 ? 'selected' : '' %>>3 Star</option>
-                            <option value="4" <%= typeof reliability != 'undefined' && reliability == 4 ? 'selected' : '' %>>4 Star</option>
-                            <option value="5" <%= typeof reliability != 'undefined' && reliability == 5 ? 'selected' : '' %>>5 Star</option>
-                        </select>
+                        <label for="order_qty">Quantité de commande réussie</label>
+                        <input type="number" class="form-control" name="order_qty" id="order_qty"  placeholder="Entrez la quantité commandée" value="<%= typeof order_qty != 'undefined' ? order_qty : '' %>">
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="order_qty">Successful Order Qty</label>
-                        <input type="number" class="form-control" name="order_qty" id="order_qty"  placeholder="Enter Order Qty" value="<%= typeof order_qty != 'undefined' ? order_qty : '' %>">
-                    </div>
-
-                    <div class="form-group mt-3">
-                        <input required type="checkbox" id="condition1" name="condition1"
-                        >
+                        <input required type="checkbox" id="condition1" name="condition1" value="1" <% if(typeof condition1 != 'undefined' && condition1 == 1) { %> checked <% } %> >
                          
                         <label for="condition1">J’ai lu et j’accepte les <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition1_modal">conditions générales d‘utilisation</a></label>
                     </div>
                     <div class="form-group mt-3">
-                        <input required type="checkbox" id="condition2" name="condition2"
-                        >
+                        <input required type="checkbox" id="condition2" name="condition2" value="1" <% if(typeof condition2 != 'undefined' && condition2 == 1) { %> checked <% } %> >
                          
                         <label for="condition2">J’ai lu et j’accepte les <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition2_modal">conditions générales de vente</a></label>
                     </div>
                     <div class="form-group mt-3">
-                        <input required type="checkbox" id="condition3" name="condition3">
+                        <input required type="checkbox" id="condition3" name="condition3" value="1" <% if(typeof condition3 != 'undefined' && condition3 == 1) { %> checked <% } %> >
                         <label for="condition3">Je m'engage à suivre <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition3_modal">la charte</a></label>
                     </div> 
                     <div class="form-group mt-3">
-                        <input required type="checkbox" id="hd_camera" name="hd_camera">
+                        <input  type="checkbox" id="hd_camera" name="hd_camera" value="1" <% if(typeof hd_camera != 'undefined' && hd_camera == 1) { %> checked <% } %>>
                         <label for="hd_camera">Mon téléphone portable dispose d'une camera HD ou supérieure.</label>
                     </div>
-                    <p>Je, soussigné prénom nom, m'engage à réaliser tous les services commandés par le client en suivant exactement la liste de tâche associée à chaque service.</p>
-                    <p>Je m'engage à accomplir toutes les tâches correspondantes à chaque service sans en oublier aucune.</p>
-                    <p>Je m'engage à accomplir chaque tâche au plus tôt, dès qu'il m'est humainement possible de l'effectuer.</p>
-                    <p>Je m'engage à m’auto former à la visite immobilière en regardant au moins 3 des vidéos suivantes : <a href="https://www.youtube.com/results?search_query=agent+immobilier+visite" target="_blank">https://www.youtube.com/results?search_query=agent+immobilier+visite</a></p>
-                    <p>Je m'engage à démarrer la visite à l'heure convenue sans retard.</p>
-                    <p>Je m'engage à rester courtois en toutes circonstances.</p>
-
-                    <button type="submit" class="btn btn-primary mt-4 w-100">Submit</button>
-                </form>
+                    
+                    <button type="submit" class="btn btn-primary mt-4 w-100 btn-submit">Valider</button>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-group mt-3">
                 <label>N° et rue</label>
-                <input type="text" class="form-control" id="street_number" disabled>
+                <input type="text" class="form-control" id="street_number" name="street_number" readonly value="<%= typeof street_number != 'undefined' ? street_number : '' %>">
             </div> 
             <div class="form-group mt-3">
                 <label>Complément d’adresse</label>
-                <input type="text" class="form-control" id="route" disabled>
+                <input type="text" class="form-control" id="route" name="route"  readonly value="<%= typeof route != 'undefined' ? route : '' %>">
             </div>
             <div class="form-group mt-3">
                 <label>Code postal</label>
-                <input type="text" class="form-control" id="postal_code" disabled>
+                <input type="text" class="form-control" id="postal_code" name="postal_code"  readonly value="<%= typeof postal_code != 'undefined' ? postal_code : '' %>">
             </div>
             <div class="form-group mt-3">
                 <label>Ville</label>
-                <input type="text" class="form-control" id="locality" disabled>
+                <input type="text" class="form-control" id="locality" name="locality" readonly value="<%= typeof locality != 'undefined' ? locality : '' %>">
             </div>
         </div>
     </div>
+    </form>
+
 </div>
+<div class="modal fade modal-xl" id="chart_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Je, soussigné <span class="full_name"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="d-flex align-items-center mb-2">
+                <input type="checkbox" id="task1" class="me-2">
+                <label for="task1"><p class="mb-0">m'engage à réaliser tous les services commandés par le client en suivant exactement la liste de tâche associée à chaque service.</p></label>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+
+                <input type="checkbox" id="task2" class="me-2">
+                <label for="task2"><p class="mb-0">Je m'engage à accomplir toutes les tâches correspondantes à chaque service sans en oublier aucune.</p></label>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+
+                <input type="checkbox" id="task3" class="me-2">
+                <label for="task3"><p class="mb-0">Je m'engage à accomplir chaque tâche au plus tôt, dès qu'il m'est humainement possible de l'effectuer.</p></label>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+
+                <input type="checkbox" id="task4" class="me-2">
+                <label for="task4"><p class="mb-0">Je m'engage à m’auto former à la visite immobilière en regardant au moins 3 des vidéos suivantes : <a href="https://www.youtube.com/results?search_query=agent+immobilier+visite" target="_blank">https://www.youtube.com/results?search_query=agent+immobilier+visite</a></p></label>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+
+                <input type="checkbox" id="task5" class="me-2">
+                <label for="task5"><p class="mb-0">Je m'engage à démarrer la visite à l'heure convenue sans retard.</p></label>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+
+                <input type="checkbox" id="task6" class="me-2">
+                <label for="task6"><p class="mb-0">Je m'engage à rester courtois en toutes circonstances.</p></label>
+            </div>
+              
+           
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-submit chart-ok" disabled >Valider</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 <%- contentFor('footer') %>
 
 
@@ -219,6 +271,33 @@
     $(document).ready(function() {
         // Attach maskPhoneNumber function to the input field
         document.getElementById('phone').addEventListener('input', maskPhoneNumber);
+
+        $("#condition3").on("change", function() {
+            if($(this).is(":checked")) {
+                $(".full_name").text($("#first_name").val() + " " + $("#last_name").val());
+                $("#chart_modal").modal("show");  
+                if ($("#chart_modal input[type='checkbox']:checked").length == 6) {
+                    $("#chart_modal .btn-submit").prop("disabled", false);
+                } else {
+                    $("#chart_modal .btn-submit").prop("disabled", true);
+                    $("#condition3").prop("checked", false);
+
+                }  
+            } 
+        });
+
+        $("#chart_modal input[type='checkbox']").on("change", function() {
+            if($("#chart_modal input[type='checkbox']:checked").length == 6) {
+                $("#chart_modal .btn-submit").prop("disabled", false);
+            } else {
+                $("#chart_modal .btn-submit").prop("disabled", true);
+            }
+        });
+
+        $(".chart-ok").on("click", function() {
+            $("#condition3").prop("checked", true);
+            $("#chart_modal").modal("hide");
+        });
     });
     
 </script>

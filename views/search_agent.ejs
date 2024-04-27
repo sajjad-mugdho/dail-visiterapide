@@ -10,17 +10,17 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 mt-5 mb-5">
-            <h2><a href="/">Home</a> / Search Agent</h2>
+            <h2><a href="/">Accueil</a> / Agent de recherche</h2>
         </div>
         <div class="col-md-12 mb-3">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group mb-2">
-                        <label>Shared availability hours</label>
+                        <label>Horaires de disponibilité partagés</label>
                         <input type="number" value="2" class="form-control" id="hours">
                     </div>
                     <div class="form-group mb-2">
-                        <label>Minimum rating</label>
+                        <label>Note minimale</label>
                         <select id="customer_rating" class="form-control">
                             <option selected value="1">1</option>
                             <option value="2">2</option>
@@ -30,7 +30,7 @@
                         </select>
                     </div>
                     <div class="form-group mb-2">
-                        <label>Minimal reliability</label>
+                        <label>Fiabilité minimale</label>
                         <select id="reliability" class="form-control">
                             <option selected value="1">1</option>
                             <option value="2">2</option>
@@ -40,14 +40,14 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <a class="ui button primary" onclick="search_agents()">Search</a>
+                        <a class="ui button primary" onclick="search_agents()">Recherche</a>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h4 class="mb-2">Customer Details</h4>
-                    <div><strong>Name : </strong><%= customer.first_name %> <%= customer.last_name %></div>
-                    <div><strong>Email : </strong><%= customer.email %></div>
-                    <div><strong>Address : </strong><%= customer.address %></div>
+                    <h4 class="mb-2">Détails du client</h4>
+                    <div><strong>Nom : </strong><%= customer.first_name %> <%= customer.last_name %></div>
+                    <div><strong>E-mail : </strong><%= customer.email %></div>
+                    <div><strong>Adresse : </strong><%= customer.address %></div>
                 </div>
             </div>
             
@@ -56,13 +56,13 @@
     </div>
     <table class="table mb-3 mt-3 ui celled" id="agents">
         <thead>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Number of visits made</th>
-            <th>Reliability (positive response rate) /5</th>
-            <th>Customer rating (/5)</th>
-            <th>Distance I agree to travel (kms)*</th>
-            <th>Choose the agent</th>
+            <th>Prénom</th>
+            <th>Nom de famille</th>
+            <th>Nombre de visites effectuées</th>
+            <th>Fiabilité (taux de réponse positive) /5</th>
+            <th>Note du client (/5)</th>
+            <th>Distance que j'accepte de parcourir (kms)*</th>
+            <th>Choisissez l'agent</th>
         </thead>
 
     </table>
@@ -80,6 +80,9 @@
     function init_table(){
 
         table=$("#agents").DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/2.0.5/i18n/fr-FR.json',
+                    },
                     "dom": 'Bfrt',
                     "processing": true,
                     "serverSide": true,
@@ -109,7 +112,7 @@
                         { 
                             "data": "choose_the_agent" ,
                             "render": function(data, type, row, meta){
-                                return '<a href="/" class="ui button primary">Choose</a>';
+                                return '<a href="/" class="ui button primary">Choisir</a>';
                             }
                         }
                     ]

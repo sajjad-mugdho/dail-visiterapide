@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../../config/database');
+const Address = require('./Address');
 
 const Agent = sequelize.define('agents', {
 		id: {
@@ -22,14 +23,6 @@ const Agent = sequelize.define('agents', {
 		},
 		address: {
 			type: DataTypes.STRING,
-			allowNull: false
-		},
-		lat: {
-			type: DataTypes.FLOAT,
-			allowNull: false
-		},
-		lng: {
-			type: DataTypes.FLOAT,
 			allowNull: false
 		},
 		customer_rating: {
@@ -56,8 +49,26 @@ const Agent = sequelize.define('agents', {
 			type: DataTypes.INTEGER,
 			allowNull: true
 		},
+		phone: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		password: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		hd_camera: {	
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
 
 
   	});
-
+	Agent.hasOne(Address, {
+		foreignKey: 'user_id',
+		as: 'address_details',
+		scope: {
+			user_type: 'agent'
+		}
+	});
 module.exports = Agent;

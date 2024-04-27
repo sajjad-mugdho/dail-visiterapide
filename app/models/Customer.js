@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../../config/database');
+const Address = require('./Address');
 
 const Customer = sequelize.define('customers', {
 		id: {
@@ -24,14 +25,6 @@ const Customer = sequelize.define('customers', {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-		lat: {
-			type: DataTypes.FLOAT,
-			allowNull: false
-		},
-		lng: {
-			type: DataTypes.FLOAT,
-			allowNull: false
-		}, 
 		availibility: {
 			type: DataTypes.STRING,
 			allowNull: true
@@ -43,7 +36,15 @@ const Customer = sequelize.define('customers', {
 		password: {
 			type: DataTypes.STRING,
 			allowNull: true
-		}
-  	});
+		},
+		
 
+  	});
+Customer.hasOne(Address, {
+	foreignKey: 'user_id',
+	as: 'address_details',
+	scope: {
+		user_type: 'customer'
+	}
+});
 module.exports = Customer;

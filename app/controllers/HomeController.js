@@ -1,5 +1,6 @@
 const Agent = require('../models/Agent');
 const Customer = require('../models/Customer');
+const Address = require('../models/Address');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const crypto = require('crypto');
@@ -10,7 +11,7 @@ class HomeController {
 	// home page
 	home(req, res) {
 		res.render('index', {
-			title: 'Home page'			
+			title: "Page d'accueil"			
 		});
 	}
 
@@ -18,7 +19,7 @@ class HomeController {
 	// agent page
 	agent(req, res) {
 		res.render('agent', {
-			title: 'Agent page',
+			title: 'Ajouter un agent',
 			customer_rating:5,
 			reliability:5,
 			order_qty:10,
@@ -43,7 +44,7 @@ class HomeController {
 			return res.redirect('/customers');
 		}
 		res.render('search_agent', {
-			title: 'Search Agent page',
+			title: 'Page Rechercher un agent',
 			customer: customer,
 		});
 	}
@@ -65,12 +66,29 @@ class HomeController {
 		const reliability=req.body.reliability;
 		var hours=req.body.hours;
 		
-		//get customer
+		//get customer with address left join
 		const customer=await Customer.findOne({
 			where: {
 				id: customer_id
-			}
+			},
+			include: [
+				{
+					required: false,
+					model: Address,
+					as: 'address_details',
+					// where: {
+					// 	user_type: 'customer'
+					// }
+					
+				}
+			]
 		});
+		// const customer=await Customer.findOne({
+		// 	where: {
+		// 		id: customer_id
+		// 	}
+		// });
+		
 		
 		
 		var filters=[
@@ -113,23 +131,26 @@ class HomeController {
 		if(query.length>0){
 			filters.push(query);
 		}
-		
-		var targetLat=customer.lat;
-		var targetLng=customer.lng;
-		
-		filters.push({
-			distance: {
-				[Op.gte]: Sequelize.literal(
-				`(
-					6371 * acos(
-					cos(radians(${targetLat})) * cos(radians(lat)) * cos(radians(lng) - radians(${targetLng})) +
-					sin(radians(${targetLat})) * sin(radians(lat))
-					)
-				)`
-				),
-			}
-		});	
+		if(customer.address_details && customer.address_details.lat){
+			var targetLat=customer.address_details.lat;
+			var targetLng=customer.address_details.lng;
 
+			
+			filters.push({
+				distance: {
+					[Op.gte]: Sequelize.literal(
+					`(
+						6371 * acos(
+						cos(radians(${targetLat})) * cos(radians(address_details.lat)) * cos(radians(address_details.lng) - radians(${targetLng})) +
+						sin(radians(${targetLat})) * sin(radians(address_details.lat))
+						)
+					)`
+					),
+				}
+			});	
+
+		}
+		
 		
 		
 
@@ -137,7 +158,20 @@ class HomeController {
 			offset: parseInt(skip),
 			limit: parseInt(limit),
 			where: filters,
-			order: [[sort_column, dir]]
+			order: [[sort_column, dir]],
+			attributes: { exclude: ['password'] },
+			include: [
+				{
+					required: false,
+					model: Address,
+					as: 'address_details',
+					// where: {
+					// 	user_type: 'agent'
+					// }
+					
+				}
+			]
+
 		});
 
 		for (var i=0;i<data.length;i++){
@@ -182,7 +216,7 @@ class HomeController {
 	// customer page
 	customer(req, res) {
 		res.render('customer', {
-			title: 'Customer page',
+			title: 'Ajouter un client',
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY
 			
 		});
@@ -192,7 +226,7 @@ class HomeController {
 	// customers page
 	customers(req, res) {
 		res.render('customers', {
-			title: 'Customers page'
+			title: 'Clients'
 			
 		});
 	}
@@ -289,66 +323,114 @@ class HomeController {
 	// [POST] /
 	// register agent
 	async agentRegister(req, res) {
-		const { first_name, last_name, email, address, lat, lng,
-			customer_rating, reliability, distance, order_qty,availibility
-		} = req.body;
+		try{
+			const { first_name, last_name, email, address, lat, lng,
+				customer_rating, reliability, distance, order_qty,availibility,
+				phone, password,street_number,route,locality,postal_code,hd_camera
+			} = req.body;
 
-		// Create agent
-		const agent = await Agent.create({
-			first_name,
-			last_name,
-			email,
-			address,
-			lat,
-			lng,
-			customer_rating,
-			reliability,
-			distance,
-			order_qty,
-			availibility
-		});
-		return agent;
+			// Create agent
+			const agent = await Agent.create({
+				first_name,
+				last_name,
+				email,
+				address,
+				customer_rating,
+				reliability,
+				distance,
+				order_qty,
+				availibility,
+				phone,
+				hd_camera
+
+			});
+
+
+			await Address.create({
+				"street_number":street_number,
+				"route":route,
+				"locality":locality,
+				"postal_code":postal_code,
+				"user_type":"agent",
+				"user_id":agent.id,
+				"lat":lat,
+				"lng":lng
+				
+			});
+
+			const userId = agent.id;
+			const encryptionKey = await this.generateEncryptionKey(userId);
+			const hashedPassword = await this.hashPassword(password, encryptionKey);
+				// Update the customer with the hashed password
+			await Agent.update({
+				password: hashedPassword
+			}, {
+				where: {
+					id: userId
+				}
+			});
+			return agent;
+		}catch(err){
+			console.log(err);
+			return null;
+		}
 	}
 
 	// [POST] /
 	// register customer
 	async customerRegister(req, res) {
-		const { first_name, last_name, email, address, lat, lng,
-			availibility, phone, password
-		} = req.body;
+		try{
+			const { first_name, last_name, email, address, lat, lng,
+				availibility, phone, password,street_number,route,locality,postal_code
+			} = req.body;
+			console.log(req.body);
+
+			// Create customer
+			const customer = await Customer.create({
+				first_name,
+				last_name,
+				email,
+				address,
+				availibility,
+				phone,
+			});
+
+			await Address.create({
+				"street_number":street_number,
+				"route":route,
+				"locality":locality,
+				"postal_code":postal_code,
+				"user_type":"customer",
+				"user_id":customer.id,
+				"lat":lat,
+				"lng":lng
+				
+			});
+			
+
+			const userId = customer.id;
+			const encryptionKey = await this.generateEncryptionKey(userId);
+			const hashedPassword = await this.hashPassword(password, encryptionKey);
+			// Update the customer with the hashed password
+			await Customer.update({
+				password: hashedPassword
+			}, {
+				where: {
+					id: userId
+				}
+			});
 
 
-		// Create customer
-		const customer = await Customer.create({
-			first_name,
-			last_name,
-			email,
-			address,
-			lat,
-			lng,
-			availibility,
-			phone,
-		});
+			// const encryptionKey2 =await this.generateEncryptionKey(userId);
 
-		const userId = customer.id;
-		const encryptionKey = await this.generateEncryptionKey(userId);
-		const hashedPassword = await this.hashPassword(password, encryptionKey);
-		// Update the customer with the hashed password
-		await Customer.update({
-			password: hashedPassword
-		}, {
-			where: {
-				id: userId
-			}
-		});
+			// const passwordMatches =await this.verifyPassword(password, hashedPassword, encryptionKey2);
+			// console.log(passwordMatches); // true
 
-
-		// const encryptionKey2 =await this.generateEncryptionKey(userId);
-
-		// const passwordMatches =await this.verifyPassword(password, hashedPassword, encryptionKey2);
-		// console.log(passwordMatches); // true
-
-		return customer;
+			return customer;
+		}catch(err){
+			console.log(err);
+			return null;
+		}
 	}
 }
 

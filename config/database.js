@@ -10,7 +10,8 @@ const DB_PASSWORD = process.env.DB_PASSWORD
 // database connection
 const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
   dialect: 'mysql',
-  host: DB_HOST
+  host: DB_HOST,
+  logging: false
 });
 
 module.exports = sequelize;

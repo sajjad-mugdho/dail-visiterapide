@@ -9,15 +9,15 @@
 <div class="container">
     <div class="row mt-5 mb-5">
         <div class="col-md-12">
-            <h2><a href="/">Home</a> / Customers</h2>
+            <h2><a href="/">Accueil</a> / Clients</h2>
         </div>
     </div>
     <table class="table mb-3 ui celled" id="customers">
         <thead>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Address</th>
+            <th>Prénom</th>
+            <th>Nom de famille</th>
+            <th>E-mail</th>
+            <th>Adresse</th>
             <th>Action</th>
         </thead>
 
@@ -30,6 +30,9 @@
     $(document).ready(function(){
         //post request
         const table=$("#customers").DataTable({
+            language: {
+        url: '//cdn.datatables.net/plug-ins/2.0.5/i18n/fr-FR.json',
+    },  
             "processing": true,
             "serverSide": true,
             "ajax": {
@@ -45,7 +48,7 @@
                     "data": "action",
                     "orderable": false,
                     "render": function(data, type, row, meta){
-                        return '<a class="ui button primary" href="/customer/'+row.id+'">Show</a>';
+                        return '<a class="ui button primary" href="/customer/'+row.id+'">Montrer</a>';
                     }
                 }
             ]

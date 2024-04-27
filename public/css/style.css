@@ -7,3 +7,7 @@
 td.selected {
   background-color: green;
 }
+.btn-submit{
+  background-color: #00BF63;
+  border-color: #00BF63;
+}

@@ -19,16 +19,16 @@ router.post('/agent/search', HomeController.searchAgentFilter);
 
 // register agent
 router.post('/agent', [
-    check('first_name', 'This First name must me 3+ characters long')
+    check('first_name', 'Le prénom doit contenir plus de 3 caractères')
         .exists()
         .isLength({ min: 3 }),
-    check('last_name', 'This Last name must me 3+ characters long')
+    check('last_name', 'Le nom de famille doit comporter plus de 3 caractères')
         .exists()
         .isLength({ min: 3 }),
-    check('phone', 'This Phone number must me 10+ characters long')
+    check('phone', 'Ce numéro de téléphone doit contenir 10 caractères')
         .exists()
         .isLength({ min: 10 }),
-    check('email', 'This email is not valid')
+    check('email', "Cet email n'est pas valide")
         .exists()
         .isEmail()
         .custom((value, { req }) => {
@@ -36,21 +36,21 @@ router.post('/agent', [
                 Agent.findOne({ where: { email: req.body.email } })
                     .then(agent => {
                         if (agent !== null) {
-                            reject(new Error('E-mail already in use'))
+                            reject(new Error('Email déjà utilisé'))
                         }
                         resolve(true)
                     })
             });
         }),
         
-    check('address', 'This address must me 3+ characters long')
+    check('address', 'Cette adresse doit comporter plus de 3 caractères')
         .exists()
         .isLength({ min: 3 }),
 
-    check('lat', 'This latitude is not valid')
+    check('lat', "La Latitude n'est pas valide")
         .exists()
         .isNumeric(),
-    check('lng', 'This longitude is not valid')
+    check('lng', "La longitude n'est pas valide")
         .exists()
         .isNumeric(),
 
@@ -61,7 +61,7 @@ router.post('/agent', [
     check('availibility', 'Veuillez cocher au moins 3 heures de disponibilité')
         .exists()
         .custom((value, { req }) => {
-            const availibility = req.body.availibility
+            var availibility = req.body.availibility
             availibility=availibility.split(',')
             //remove 0 values from array
             availibility = availibility.filter(function(e) { return e !== '0' })
@@ -85,6 +85,7 @@ router.post('/agent', [
     if(!errors.isEmpty()) {
         const alert = errors.array({ onlyFirstError: true })
         //send alert to view with errors and form values
+        
         res.render('agent', {
             alert,
             first_name: req.body.first_name,
@@ -100,13 +101,21 @@ router.post('/agent', [
             availibility: req.body.availibility,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY,
             phone: req.body.phone,
-            password: req.body.password
+            password: req.body.password,
+            street_number: req.body.street_number,
+            route: req.body.route,
+            locality: req.body.locality,
+            postal_code: req.body.postal_code,
+            hd_camera: req.body.hd_camera,
+            condition1: req.body.condition1,
+            condition2: req.body.condition2,
+            condition3: req.body.condition3,
         })
     }else{
         //if no errors register agent
         await HomeController.agentRegister(req, res)
         res.render('agent', {
-            success_msg: 'Agent added successfully',
+            success_msg: 'Agent ajouté avec succès',
             customer_rating:5,
 			reliability:5,
             order_qty:10,
@@ -120,13 +129,13 @@ router.post('/agent', [
 
 // register customer
 router.post('/customer', [
-    check('first_name', 'This First name must me 3+ characters long')
+    check('first_name', 'Le prénom doit contenir plus de 3 caractères')
         .exists()
         .isLength({ min: 3 }),
-    check('last_name', 'This Last name must me 3+ characters long')
+    check('last_name', 'Le nom de famille doit comporter plus de 3 caractères')
         .exists()
         .isLength({ min: 3 }),
-    check('email', 'This email is not valid')
+    check('email', "Cet email n'est pas valide")
         .exists()
         .isEmail()
         .custom((value, { req }) => {
@@ -134,22 +143,22 @@ router.post('/customer', [
                 Customer.findOne({ where: { email: req.body.email } })
                     .then(customer => {
                         if (customer !== null) {
-                            reject(new Error('E-mail already in use'))
+                            reject(new Error('Email déjà utilisé'))
                         }
                         resolve(true)
                     })
             });
         }),
-    check('address', 'This address must me 3+ characters long')
+    check('address', 'Cette adresse doit comporter plus de 3 caractères')
         .exists()
         .isLength({ min: 3 }),
-    check('lat', 'This latitude is not valid')
+    check('lat', "La latitude n'est pas valide")
         .exists()
         .isNumeric(),
-    check('lng', 'This longitude is not valid')
+    check('lng', "La longitude n'est pas valide")
         .exists()
         .isNumeric(),
-    check('phone', 'This Phone number must me 10 characters long')
+    check('phone', 'Ce numéro de téléphone doit contenir 10 caractères')
         .exists()
         .custom((value, { req }) => {
             //remove spaces
@@ -161,6 +170,10 @@ router.post('/customer', [
                 return false
             }
         }),
+    check('password', 'Votre mot de passe doit comporter au moins 10 caractères et doit comporter quatre types de caractères différents : majuscules, minuscules, chiffres, et signes de ponctuation ou caractères spéciaux (€, # . . .)')
+        .exists()
+        .isLength({ min: 10 })
+        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/, "i"),
 
         
 ], async (req, res)=> {
@@ -180,14 +193,20 @@ router.post('/customer', [
             availibility: req.body.availibility,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY,
             phone: req.body.phone,
-            password: req.body.password
+            password: req.body.password,
+            street_number: req.body.street_number,
+            route: req.body.route,
+            locality: req.body.locality,
+            postal_code: req.body.postal_code,
+            condition1: req.body.condition1,
+            condition2: req.body.condition2,   
 
         })
     }else{
         //if no errors register customer
         await HomeController.customerRegister(req, res)
         res.render('customer', {
-            success_msg: 'Customer added successfully',
+            success_msg: 'Client ajouté avec succès',
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY
 
         })
