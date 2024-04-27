@@ -2,6 +2,8 @@ const Agent = require('../models/Agent');
 const Customer = require('../models/Customer');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const crypto = require('crypto');
+
 
 class HomeController {
 	// [GET] /
@@ -256,6 +258,34 @@ class HomeController {
 		
 	}
 
+
+	// Function to generate encryption key from user identifier
+	async generateEncryptionKey(userId) {
+		// Convert the user ID to a string
+		const userIdString = userId.toString();
+		// Use SHA-256 hash function to generate encryption key
+		const encryptionKey = crypto.createHash('sha256').update(userIdString).digest('hex');
+		return encryptionKey;
+	}
+
+	// Function to hash the password using encryption key
+	async hashPassword(password, encryptionKey) {
+		// Convert password and encryption key to buffers
+		const passwordBuffer = Buffer.from(password, 'utf-8');
+		const encryptionKeyBuffer = Buffer.from(encryptionKey, 'hex');
+		// Use PBKDF2 algorithm for key derivation
+		const hashedPassword = crypto.pbkdf2Sync(passwordBuffer, encryptionKeyBuffer, 100000, 64, 'sha512').toString('hex');
+		return hashedPassword;
+	}
+
+	async verifyPassword(password, storedHashedPassword, encryptionKey) {
+		// Hash the provided password using the same encryption key
+		const hashedPasswordToCheck = await this.hashPassword(password, encryptionKey);
+		// Compare the hashed password with the stored hashed password
+		
+		return hashedPasswordToCheck.toString() === storedHashedPassword.toString();
+	}
+
 	// [POST] /
 	// register agent
 	async agentRegister(req, res) {
@@ -284,8 +314,9 @@ class HomeController {
 	// register customer
 	async customerRegister(req, res) {
 		const { first_name, last_name, email, address, lat, lng,
-			availibility
+			availibility, phone, password
 		} = req.body;
+
 
 		// Create customer
 		const customer = await Customer.create({
@@ -295,8 +326,28 @@ class HomeController {
 			address,
 			lat,
 			lng,
-			availibility
+			availibility,
+			phone,
 		});
+
+		const userId = customer.id;
+		const encryptionKey = await this.generateEncryptionKey(userId);
+		const hashedPassword = await this.hashPassword(password, encryptionKey);
+		// Update the customer with the hashed password
+		await Customer.update({
+			password: hashedPassword
+		}, {
+			where: {
+				id: userId
+			}
+		});
+
+
+		// const encryptionKey2 =await this.generateEncryptionKey(userId);
+
+		// const passwordMatches =await this.verifyPassword(password, hashedPassword, encryptionKey2);
+		// console.log(passwordMatches); // true
+
 		return customer;
 	}
 }

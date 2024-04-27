@@ -4,8 +4,8 @@
                     
                 <div class="col-md-12">
                     <h3>
-                        <a class="text-decoration-none" href="/">Home</a> / 
-                        Add Customer
+                        <a class="text-decoration-none" href="/">Tableau de bord</a> / 
+                        Ajouter un client
                     </h3>
                 </div>
 
@@ -32,29 +32,69 @@
                 <div class="col-md-12">
                     <form class="mt-4" method="post" action="/customer">
                         <div class="form-group mt-3">
-                            <label for="first_name">First Name<sup>*</sup></label>
-                            <input type="text" class="form-control" name="first_name" id="first_name"  placeholder="Enter First Name" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
+                            <label for="first_name">Prénom<sup>*</sup></label>
+                            <input  required  type="text" class="form-control" name="first_name" id="first_name"  placeholder="Entrez votre prénom" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
                         </div>
                         <div class="form-group mt-3">
-                            <label for="last_name">Last Name<sup>*</sup></label>
-                            <input type="text" class="form-control" name="last_name" id="last_name"  placeholder="Enter Last Name" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
+                            <label for="last_name">Nom de famille<sup>*</sup></label>
+                            <input required  type="text" class="form-control" name="last_name" id="last_name"  placeholder="Entrer le nom de famille" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
                         </div>
                         <div class="form-group mt-3">
-                            <label for="email">Email<sup>*</sup></label>
-                            <input type="email" class="form-control" name="email" id="email"  placeholder="Enter Email" value="<%= typeof email != 'undefined' ? email : '' %>">
+                            <label for="email">E-mail<sup>*</sup></label>
+                            <input required  type="email" class="form-control" name="email" id="email"  placeholder="Entrez l'e-mail" value="<%= typeof email != 'undefined' ? email : '' %>">
                         </div>
                         <div class="form-group mt-3">
-                            <label for="address">Address<sup>*</sup></label>
-                            <input type="text" class="form-control" name="address" id="address"  placeholder="Enter Address" value="<%= typeof address != 'undefined' ? address : '' %>">
+                            <label for="password">Mot de passe<sup>*</sup></label>
+                            <input required  type="password" class="form-control" name="password" id="password"  placeholder="Entrer le mot de passe" value="<%= typeof password != 'undefined' ? password : '' %>">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="phone">Téléphone<sup>*</sup></label>
+                            <input required  type="tel" pattern="[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" class="form-control" name="phone" id="phone"  placeholder="Entrez le téléphone" value="<%= typeof phone != 'undefined' ? phone : '' %>">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="address">Adresse<sup>*</sup></label>
+                            <input required  type="text" class="form-control" name="address" id="address"  placeholder="Entrer l'adresse" value="<%= typeof address != 'undefined' ? address : '' %>">
                             <input type="hidden" name="lat" id="lat" value="<%= typeof lat != 'undefined' ? lat : '' %>">
                             <input type="hidden" name="lng" id="lng" value="<%= typeof lng != 'undefined' ? lng : '' %>">
+                            <input type="hidden" name="address_components" id="address_components" value="<%= typeof address_components != 'undefined' ? address_components : '' %>">
                         </div>
                         <div class="form-group mt-3">
-                            <a class="btn btn-info" href="#" onclick="selectTimeSlot()">Availibility</a>
+                            <a class="btn btn-info" href="#" onclick="selectTimeSlot()">Disponibilité</a>
                             <input type="hidden" name="availibility" id="availibility" value="<%= typeof availibility != 'undefined' ? availibility : '' %>">
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                        <div class="form-group mt-3">
+                            <input required type="checkbox" id="condition1" name="condition1"
+                            >
+                             
+                            <label for="condition1">J’ai lu et j’accepte les <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition1_modal">conditions générales d‘utilisation</a></label>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input required type="checkbox" id="condition2" name="condition2"
+                            >
+                             
+                            <label for="condition2">J’ai lu et j’accepte les <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition2_modal">conditions générales de vente</a></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3 btn-submit">Valider</button>
                     </form>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group mt-3">
+                    <label>N° et rue</label>
+                    <input type="text" class="form-control" id="street_number" disabled>
+                </div> 
+                <div class="form-group mt-3">
+                    <label>Complément d’adresse</label>
+                    <input type="text" class="form-control" id="route" disabled>
+                </div>
+                <div class="form-group mt-3">
+                    <label>Code postal</label>
+                    <input type="text" class="form-control" id="postal_code" disabled>
+                </div>
+                <div class="form-group mt-3">
+                    <label>Ville</label>
+                    <input type="text" class="form-control" id="locality" disabled>
                 </div>
             </div>
         </div>
@@ -67,15 +107,65 @@
 <script>
     function initAutocomplete() {
         var input = document.getElementById('address');
-
-        var autocomplete = new google.maps.places.Autocomplete(input);
+        var options = {
+          componentRestrictions: {country: 'fr'}
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input,options);
         //on place change
         autocomplete.addListener('place_changed', function() {
             var place = autocomplete.getPlace();
+            //street_number
+            //route
+            //locality
+            //postal_code
+
+            for (var i = 0; i < place.address_components.length; i++) {
+                console.log(place.address_components[i]);
+                var addressType = place.address_components[i].types[0];
+                if (addressType == 'postal_code') {
+                    $('#postal_code').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'locality') {
+                    $('#locality').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'route') {
+                    $('#route').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'street_number') {
+                    $('#street_number').val(place.address_components[i].long_name);
+                }
+                //sometimes it is not necessary to have street_number
+
+            }
             //set lat and lng
             $('#lat').val(place.geometry.location.lat());
             $('#lng').val(place.geometry.location.lng());
+            
         });
     }
+    
+</script>
+<script>
+    // Masking function
+    function maskPhoneNumber(event) {
+        let inputValue = event.target.value.replace(/\D/g, '');
+        //if length greater than 10 trim
+        if (inputValue.length > 10) {
+            inputValue = inputValue.slice(0, 10);
+        }
+        let formattedValue = inputValue.replace(/(\d{2})(\d{2})?(\d{2})?(\d{2})?(\d{2})?/, function(match, p1, p2, p3, p4, p5) {
+            let parts = [p1];
+            if (p2) parts.push(p2);
+            if (p3) parts.push(p3);
+            if (p4) parts.push(p4);
+            if (p5) parts.push(p5);
+            return parts.join(' ');
+        });
+        event.target.value = formattedValue;
+    }
+    $(document).ready(function() {
+        // Attach maskPhoneNumber function to the input field
+        document.getElementById('phone').addEventListener('input', maskPhoneNumber);
+    });
     
 </script>

@@ -1,7 +1,7 @@
 
 <div class="container">
     <div class="row mt-4 align-items-center h-100">
-        <div class="col-md-4 m-auto">
+        <div class="col-md-6 m-auto">
                 
             <div class="col-md-12">
                 <h3>
@@ -31,18 +31,35 @@
             <!-- add agent form -->
             <div class="col-md-12">
                 <form class="mt-4" method="post" action="/agent">
-                    <div class="form-group mt-3">
-                        <label for="first_name">First Name<sup>*</sup></label>
-                        <input type="text" class="form-control" name="first_name" id="first_name"  placeholder="Enter First Name" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="last_name">Last Name<sup>*</sup></label>
-                        <input type="text" class="form-control" name="last_name" id="last_name"  placeholder="Enter Last Name" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
+                    <div class="row">
+                        <div class="col-md-6">
+                            
+                            <div class="form-group mt-3">
+                                <label for="first_name">First Name<sup>*</sup></label>
+                                <input type="text" class="form-control" name="first_name" id="first_name"  placeholder="Enter First Name" value="<%= typeof first_name != 'undefined' ? first_name : '' %>">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            
+                            <div class="form-group mt-3">
+                                <label for="last_name">Last Name<sup>*</sup></label>
+                                <input type="text" class="form-control" name="last_name" id="last_name"  placeholder="Enter Last Name" value="<%= typeof last_name != 'undefined' ? last_name : '' %>">
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group mt-3">
                         <label for="email">Email<sup>*</sup></label>
                         <input type="email" class="form-control" name="email" id="email"  placeholder="Enter Email" value="<%= typeof email != 'undefined' ? email : '' %>">
                     </div>
+                    <div class="form-group mt-3">
+                        <label for="password">Password<sup>*</sup></label>
+                        <input required  type="password" class="form-control" name="password" id="password"  placeholder="Enter Password" value="<%= typeof password != 'undefined' ? password : '' %>">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="phone">Phone<sup>*</sup></label>
+                        <input required  type="tel" pattern="[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" class="form-control" name="phone" id="phone"  placeholder="Enter Phone" value="<%= typeof phone != 'undefined' ? phone : '' %>">
+                    </div>
+
                     <div class="form-group mt-3">
                         <label for="address">Address<sup>*</sup></label>
                         <input type="text" class="form-control" name="address" id="address"  placeholder="Enter Address" value="<%= typeof address != 'undefined' ? address : '' %>">
@@ -84,8 +101,55 @@
                         <label for="order_qty">Successful Order Qty</label>
                         <input type="number" class="form-control" name="order_qty" id="order_qty"  placeholder="Enter Order Qty" value="<%= typeof order_qty != 'undefined' ? order_qty : '' %>">
                     </div>
+
+                    <div class="form-group mt-3">
+                        <input required type="checkbox" id="condition1" name="condition1"
+                        >
+                         
+                        <label for="condition1">J’ai lu et j’accepte les <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition1_modal">conditions générales d‘utilisation</a></label>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input required type="checkbox" id="condition2" name="condition2"
+                        >
+                         
+                        <label for="condition2">J’ai lu et j’accepte les <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition2_modal">conditions générales de vente</a></label>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input required type="checkbox" id="condition3" name="condition3">
+                        <label for="condition3">Je m'engage à suivre <a href="javascript:void(0)"  data-bs-toggle="modal" data-bs-target="#condition3_modal">la charte</a></label>
+                    </div> 
+                    <div class="form-group mt-3">
+                        <input required type="checkbox" id="hd_camera" name="hd_camera">
+                        <label for="hd_camera">Mon téléphone portable dispose d'une camera HD ou supérieure.</label>
+                    </div>
+                    <p>Je, soussigné prénom nom, m'engage à réaliser tous les services commandés par le client en suivant exactement la liste de tâche associée à chaque service.</p>
+                    <p>Je m'engage à accomplir toutes les tâches correspondantes à chaque service sans en oublier aucune.</p>
+                    <p>Je m'engage à accomplir chaque tâche au plus tôt, dès qu'il m'est humainement possible de l'effectuer.</p>
+                    <p>Je m'engage à m’auto former à la visite immobilière en regardant au moins 3 des vidéos suivantes : <a href="https://www.youtube.com/results?search_query=agent+immobilier+visite" target="_blank">https://www.youtube.com/results?search_query=agent+immobilier+visite</a></p>
+                    <p>Je m'engage à démarrer la visite à l'heure convenue sans retard.</p>
+                    <p>Je m'engage à rester courtois en toutes circonstances.</p>
+
                     <button type="submit" class="btn btn-primary mt-4 w-100">Submit</button>
                 </form>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group mt-3">
+                <label>N° et rue</label>
+                <input type="text" class="form-control" id="street_number" disabled>
+            </div> 
+            <div class="form-group mt-3">
+                <label>Complément d’adresse</label>
+                <input type="text" class="form-control" id="route" disabled>
+            </div>
+            <div class="form-group mt-3">
+                <label>Code postal</label>
+                <input type="text" class="form-control" id="postal_code" disabled>
+            </div>
+            <div class="form-group mt-3">
+                <label>Ville</label>
+                <input type="text" class="form-control" id="locality" disabled>
             </div>
         </div>
     </div>
@@ -98,11 +162,34 @@
 <script>
     function initAutocomplete() {
         var input = document.getElementById('address');
-
-        var autocomplete = new google.maps.places.Autocomplete(input);
+        var options = {
+          componentRestrictions: {country: 'fr'}
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input,options);
         //on place change
         autocomplete.addListener('place_changed', function() {
             var place = autocomplete.getPlace();
+
+            for (var i = 0; i < place.address_components.length; i++) {
+                console.log(place.address_components[i]);
+                var addressType = place.address_components[i].types[0];
+                if (addressType == 'postal_code') {
+                    $('#postal_code').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'locality') {
+                    $('#locality').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'route') {
+                    $('#route').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'street_number') {
+                    $('#street_number').val(place.address_components[i].long_name);
+                }
+                //sometimes it is not necessary to have street_number
+
+            }
+            //set lat and lng
+
             //set lat and lng
             $('#lat').val(place.geometry.location.lat());
             $('#lng').val(place.geometry.location.lng());
@@ -111,3 +198,27 @@
     
 </script>
 
+<script>
+    // Masking function
+    function maskPhoneNumber(event) {
+        let inputValue = event.target.value.replace(/\D/g, '');
+        //if length greater than 10 trim
+        if (inputValue.length > 10) {
+            inputValue = inputValue.slice(0, 10);
+        }
+        let formattedValue = inputValue.replace(/(\d{2})(\d{2})?(\d{2})?(\d{2})?(\d{2})?/, function(match, p1, p2, p3, p4, p5) {
+            let parts = [p1];
+            if (p2) parts.push(p2);
+            if (p3) parts.push(p3);
+            if (p4) parts.push(p4);
+            if (p5) parts.push(p5);
+            return parts.join(' ');
+        });
+        event.target.value = formattedValue;
+    }
+    $(document).ready(function() {
+        // Attach maskPhoneNumber function to the input field
+        document.getElementById('phone').addEventListener('input', maskPhoneNumber);
+    });
+    
+</script>

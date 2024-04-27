@@ -50,44 +50,82 @@
         var start_time="07:00";
         var end_time="22:00";
         var table='<table class="table table-bordered">';
-        table+='<thead>';
-        table+='<tr>';
-        table+='<th>Day</th>';
+        // table+='<thead>';
+        // table+='<tr>';
+        // table+='<th>Day</th>';
 
         
 
-        start_time_int=parseInt(start_time.split(":")[0]);
-        end_time_int=parseInt(end_time.split(":")[0]);
-        for(var i=start_time_int;i<end_time_int;i+=0.5){
-            var time=i.toString().split(".");
-            if(time[1] == "5"){
-                time[1]="30";
-            }else{
-                time[1]="00";
+        // start_time_int=parseInt(start_time.split(":")[0]);
+        // end_time_int=parseInt(end_time.split(":")[0]);
+        // for(var i=start_time_int;i<end_time_int;i+=0.5){
+        //     var time=i.toString().split(".");
+        //     if(time[1] == "5"){
+        //         time[1]="30";
+        //     }else{
+        //         time[1]="00";
+        //     }
+        //     time=time.join(":");
+        //     //am pm
+        //     if(i<12){
+        //         time+=" AM";
+        //     }else{
+        //         time+=" PM";
+        //     }
+        //     table+='<th>'+time+'</th>';
+        // }
+        // table+='</tr>';
+        // table+='</thead>';
+        // table+='<tbody>';
+        // var days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        // for(var i=0;i<days.length;i++){
+        //     table+='<tr>';
+        //     table+='<td>'+days[i]+'</td>';
+        //     for(var j=start_time_int;j<end_time_int;j+=0.5){
+        //         table+='<td class="timeslot"></td>';
+        //     }
+        //     table+='</tr>';
+        // }
+        // table+='</tbody>';
+        // table+='</table>';
+
+        // var table = '<table>';
+        table += '<thead>';
+        table += '<tr>';
+        var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        table += '<th>Day</th>';
+        for (var i = 0; i < days.length; i++) {
+            table += '<th>' + days[i] + '</th>';
+        }
+        table += '</tr>';
+        table += '</thead>';
+        table += '<tbody>';
+        var start_time_int = parseInt(start_time.split(":")[0]);
+        var end_time_int = parseInt(end_time.split(":")[0]);
+        for (var i = start_time_int; i < end_time_int; i += 0.5) {
+            var time = i.toString().split(".");
+            if (time[1] == "5") {
+                time[1] = "30";
+            } else {
+                time[1] = "00";
             }
-            time=time.join(":");
+            time = time.join(":");
             //am pm
-            if(i<12){
-                time+=" AM";
-            }else{
-                time+=" PM";
+            if (i < 12) {
+                time += " AM";
+            } else {
+                time += " PM";
             }
-            table+='<th>'+time+'</th>';
-        }
-        table+='</tr>';
-        table+='</thead>';
-        table+='<tbody>';
-        var days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-        for(var i=0;i<days.length;i++){
-            table+='<tr>';
-            table+='<td>'+days[i]+'</td>';
-            for(var j=start_time_int;j<end_time_int;j+=0.5){
-                table+='<td class="timeslot"></td>';
+            table += '<tr>';
+            table += '<td>' + time + '</td>';
+            for (var j = 0; j < days.length; j++) {
+                table += '<td class="timeslot"></td>';
             }
-            table+='</tr>';
+            table += '</tr>';
         }
-        table+='</tbody>';
-        table+='</table>';
+        table += '</tbody>';
+        table += '</table>';
+
         $("#calendar .modal-body").html(table);
 
         var availibility=$("#availibility").val();
