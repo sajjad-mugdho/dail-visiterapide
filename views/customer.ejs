@@ -128,11 +128,7 @@
         //on place change
         autocomplete.addListener('place_changed', function() {
             var place = autocomplete.getPlace();
-            //street_number
-            //route
-            //locality
-            //postal_code
-
+            var routes = [];
             for (var i = 0; i < place.address_components.length; i++) {
                 console.log(place.address_components[i]);
                 var addressType = place.address_components[i].types[0];
@@ -143,14 +139,37 @@
                     $('#locality').val(place.address_components[i].long_name);
                 }
                 if (addressType == 'route') {
-                    $('#route').val(place.address_components[i].long_name);
+                    route.push(place.address_components[i].long_name);
                 }
                 if (addressType == 'street_number') {
                     $('#street_number').val(place.address_components[i].long_name);
                 }
                 //sometimes it is not necessary to have street_number
+                if (addressType == 'administrative_area_level_1') {
+                    routes.push(place.address_components[i].long_name);
+                }
+                if (addressType == 'administrative_area_level_2') {
+                    routes.push(place.address_components[i].long_name);
 
+                }
+                if (addressType == 'administrative_area_level_3') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+                if (addressType == 'sublocality_level_1') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+                if (addressType == 'sublocality_level_2') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+                if (addressType == 'sublocality_level_3') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
             }
+            $('#route').val(routes.join(', '));
             //set lat and lng
             $('#lat').val(place.geometry.location.lat());
             $('#lng').val(place.geometry.location.lng());
