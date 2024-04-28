@@ -11,3 +11,6 @@ td.selected {
   background-color: #00BF63;
   border-color: #00BF63;
 }
+#calendar .modal-body{
+  height: calc(100vh - 200px);
+}

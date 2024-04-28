@@ -325,7 +325,7 @@ class HomeController {
 	async agentRegister(req, res) {
 		try{
 			const { first_name, last_name, email, address, lat, lng,
-				customer_rating, reliability, distance, order_qty,availibility,
+				 distance,availibility,
 				phone, password,street_number,route,locality,postal_code,hd_camera
 			} = req.body;
 
@@ -335,10 +335,10 @@ class HomeController {
 				last_name,
 				email,
 				address,
-				customer_rating,
-				reliability,
+				customer_rating:5,
+				reliability:5,
 				distance,
-				order_qty,
+				order_qty:10,
 				availibility,
 				phone,
 				hd_camera

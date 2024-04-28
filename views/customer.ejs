@@ -57,6 +57,10 @@
                                 <div class="form-group mt-3">
                                     <label for="password">Mot de passe<sup>*</sup></label>
                                     <input required  type="password" class="form-control" name="password" id="password"  placeholder="Entrer le mot de passe" value="<%= typeof password != 'undefined' ? password : '' %>">
+                                    <div class="d-flex align-items-center mt-2">
+                                        <input id="show-password" class="me-2" type="checkbox" onclick="var x = document.getElementById('password'); if (x.type === 'password') { x.type = 'text'; } else { x.type = 'password'; }">
+                                        <label for="show-password">Afficher le mot de passe</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -139,7 +143,7 @@
                     $('#locality').val(place.address_components[i].long_name);
                 }
                 if (addressType == 'route') {
-                    route.push(place.address_components[i].long_name);
+                    routes.push(place.address_components[i].long_name);
                 }
                 if (addressType == 'street_number') {
                     $('#street_number').val(place.address_components[i].long_name);

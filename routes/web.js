@@ -94,10 +94,9 @@ router.post('/agent', [
             address: req.body.address,
             lat: req.body.lat,
             lng: req.body.lng,
-            customer_rating: req.body.customer_rating,
-            reliability: req.body.reliability,
+           
             distance: req.body.distance,
-            order_qty: req.body.order_qty,
+           
             availibility: req.body.availibility,
 			GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY,
             phone: req.body.phone,

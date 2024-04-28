@@ -95,7 +95,7 @@
         // var table = '<table>';
         table += '<thead>';
         table += '<tr>';
-        var days = ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'];
+        var days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
         table += '<th>Horaire</th>';
         for (var i = 0; i < days.length; i++) {
             table += '<th>' + days[i] + '</th>';
@@ -120,7 +120,7 @@
             //     time += " PM";
             // }
             table += '<tr>';
-            table += '<td>' + time + '</td>';
+            table += '<td class="time">' + time + '</td>';
             for (var j = 0; j < days.length; j++) {
                 table += '<td class="timeslot"></td>';
             }
@@ -185,7 +185,12 @@ function selectTo(cell) {
     for (var i = rowStart; i <= rowEnd; i++) {
         var rowCells = table.find("tr").eq(i+1).find("td");
         for (var j = cellStart; j <= cellEnd; j++) {
-            rowCells.eq(j).addClass("selected");
+            //if selected then deselect
+            if(!selectBoxes){
+                rowCells.eq(j).removeClass("selected");
+            }else{
+                rowCells.eq(j).addClass("selected");
+            }
             
         }        
     }
@@ -194,8 +199,8 @@ function selectTo(cell) {
 $(document).on("mouseup", function (e) {
     isMouseDown = false;
 })
-
-$(document).on("mousedown", "#calendar table td", function (e) {
+var selectBoxes=true;
+$(document).on("mousedown", "#calendar table td:not(.time)", function (e) {
     isMouseDown = true;
     var cell = $(this);
     var table = $("#calendar .modal-body table");    
@@ -203,7 +208,11 @@ $(document).on("mousedown", "#calendar table td", function (e) {
     // table.find(".selected").removeClass("selected"); // deselect everything
     if(cell.hasClass("selected")){
         cell.removeClass("selected")
+        startCellIndex = cell.index();
+        startRowIndex = cell.parent().index();
+        selectBoxes=false;
     }else{
+        selectBoxes=true;
         if (e.shiftKey) {
             selectTo(cell);                
         } else {

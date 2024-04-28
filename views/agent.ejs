@@ -54,6 +54,10 @@
                             <div class="form-group mt-3">
                                 <label for="password">Mot de passe<sup>*</sup></label>
                                 <input required  type="password" class="form-control" name="password" id="password"  placeholder="Entrer le mot de passe" value="<%= typeof password != 'undefined' ? password : '' %>">
+                                <div class="d-flex align-items-center mt-2">
+                                    <input id="show-password" class="me-2" type="checkbox" onclick="var x = document.getElementById('password'); if (x.type === 'password') { x.type = 'text'; } else { x.type = 'password'; }">
+                                    <label for="show-password">Afficher le mot de passe</label>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -79,37 +83,7 @@
                         <a class="btn btn-info" href="#" onclick="selectTimeSlot()">Disponibilités</a>
                         <input type="hidden" name="availibility" id="availibility" value="<%= typeof availibility != 'undefined' ? availibility : '' %>">
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mt-3">
-                                <label for="customer-rating">Évaluation du client</label>
-                                <select class="form-control" name="customer_rating" id="customer_rating">
-                                    <option value="1" <%= typeof customer_rating != 'undefined' && customer_rating == 1 ? 'selected' : '' %>>1 Star</option>
-                                    <option value="2" <%= typeof customer_rating != 'undefined' && customer_rating == 2 ? 'selected' : '' %>>2 Star</option>
-                                    <option value="3" <%= typeof customer_rating != 'undefined' && customer_rating == 3 ? 'selected' : '' %>>3 Star</option>
-                                    <option value="4" <%= typeof customer_rating != 'undefined' && customer_rating == 4 ? 'selected' : '' %>>4 Star</option>
-                                    <option value="5" <%= typeof customer_rating != 'undefined' && customer_rating == 5 ? 'selected' : '' %>>5 Star</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mt-3">
-                                <label for="reliability">Fiabilité</label>
-                                <select class="form-control" name="reliability" id="reliability">
-                                    <option value="1" <%= typeof reliability != 'undefined' && reliability == 1 ? 'selected' : '' %>>1 Star</option>
-                                    <option value="2" <%= typeof reliability != 'undefined' && reliability == 2 ? 'selected' : '' %>>2 Star</option>
-                                    <option value="3" <%= typeof reliability != 'undefined' && reliability == 3 ? 'selected' : '' %>>3 Star</option>
-                                    <option value="4" <%= typeof reliability != 'undefined' && reliability == 4 ? 'selected' : '' %>>4 Star</option>
-                                    <option value="5" <%= typeof reliability != 'undefined' && reliability == 5 ? 'selected' : '' %>>5 Star</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group mt-3">
-                        <label for="order_qty">Quantité de commande réussie</label>
-                        <input type="number" class="form-control" name="order_qty" id="order_qty"  placeholder="Entrez la quantité commandée" value="<%= typeof order_qty != 'undefined' ? order_qty : '' %>">
-                    </div>
+               
 
                     <div class="form-group mt-3">
                         <input required type="checkbox" id="condition1" name="condition1" value="1" <% if(typeof condition1 != 'undefined' && condition1 == 1) { %> checked <% } %> >
@@ -232,7 +206,7 @@
                     $('#locality').val(place.address_components[i].long_name);
                 }
                 if (addressType == 'route') {
-                    route.push(place.address_components[i].long_name);
+                    routes.push(place.address_components[i].long_name);
                 }
                 if (addressType == 'street_number') {
                     $('#street_number').val(place.address_components[i].long_name);
