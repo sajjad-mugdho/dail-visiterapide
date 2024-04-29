@@ -58,7 +58,12 @@ router.post('/agent', [
     check('password', 'Votre mot de passe doit comporter au moins 10 caractères et doit comporter quatre types de caractères différents : majuscules, minuscules, chiffres, et signes de ponctuation ou caractères spéciaux (€, # . . .)')
         .exists()
         .isLength({ min: 10 })
-        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/, "i"),
+        .custom((value, { req }) => {
+            if(value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{10,}$/) !== null) {
+                return true
+            }
+            return false
+        }),
 
         
     check('availibility', 'Veuillez cocher au moins 3 heures de disponibilité')
@@ -175,7 +180,14 @@ router.post('/customer', [
     check('password', 'Votre mot de passe doit comporter au moins 10 caractères et doit comporter quatre types de caractères différents : majuscules, minuscules, chiffres, et signes de ponctuation ou caractères spéciaux (€, # . . .)')
         .exists()
         .isLength({ min: 10 })
-        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/, "i"),
+        //min 1 small character 1 capital character 1 number and 1 special character
+        .custom((value, { req }) => {
+            if(value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{10,}$/) !== null) {
+                return true
+            }
+            return false
+        }),
+
     check('availibility', 'Veuillez cocher au moins 3 heures de disponibilité')
         .exists()
         .custom((value, { req }) => {

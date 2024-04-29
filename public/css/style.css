@@ -14,3 +14,8 @@ td.selected {
 #calendar .modal-body{
   height: calc(100vh - 200px);
 }
+/* readonly */
+input[readonly] {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+}
