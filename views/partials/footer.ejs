@@ -240,3 +240,69 @@ $(document).on("selectstart", "#calendar table td", function (e) {
 })
 
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= GOOGLE_MAP_API_KEY %>&libraries=places&callback=initAutocomplete" async defer></script>
+
+<script>
+    function initAutocomplete() {
+        var input = document.getElementById('address');
+        var options = {
+          componentRestrictions: {country: 'fr'}
+        };
+        var autocomplete = new google.maps.places.Autocomplete(input,options);
+        //on place change
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            var routes = [];
+            var street_number = '';
+            for (var i = 0; i < place.address_components.length; i++) {
+                console.log(place.address_components[i]);
+                var addressType = place.address_components[i].types[0];
+                if (addressType == 'postal_code') {
+                    $('#postal_code').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'locality') {
+                    $('#locality').val(place.address_components[i].long_name);
+                }
+                if (addressType == 'street_number') {
+                    street_number = place.address_components[i].long_name;
+                }
+                if (addressType == 'route') {
+                    street_number = street_number + ' ' + place.address_components[i].long_name;
+                    
+                }
+                //sometimes it is not necessary to have street_number
+                if (addressType == 'administrative_area_level_1') {
+                    routes.push(place.address_components[i].long_name);
+                }
+                if (addressType == 'administrative_area_level_2') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+                if (addressType == 'administrative_area_level_3') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+                if (addressType == 'sublocality_level_1') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+                if (addressType == 'sublocality_level_2') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+                if (addressType == 'sublocality_level_3') {
+                    routes.push(place.address_components[i].long_name);
+
+                }
+            }
+            $('#street_number').val(street_number);
+
+            $('#street_address').val(routes.join(', '));
+            //set lat and lng
+            $('#lat').val(place.geometry.location.lat());
+            $('#lng').val(place.geometry.location.lng());
+            
+        });
+    }
+    
+</script>

@@ -54,10 +54,13 @@ router.post('/agent', [
         .exists()
         .isNumeric(),
 
+    //atleast 1 small character 1 capital character 1 number and 1 special character
     check('password', 'Votre mot de passe doit comporter au moins 10 caractères et doit comporter quatre types de caractères différents : majuscules, minuscules, chiffres, et signes de ponctuation ou caractères spéciaux (€, # . . .)')
         .exists()
         .isLength({ min: 10 })
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/, "i"),
+
+        
     check('availibility', 'Veuillez cocher au moins 3 heures de disponibilité')
         .exists()
         .custom((value, { req }) => {
@@ -102,7 +105,7 @@ router.post('/agent', [
             phone: req.body.phone,
             password: req.body.password,
             street_number: req.body.street_number,
-            route: req.body.route,
+            street_address: req.body.street_address,
             locality: req.body.locality,
             postal_code: req.body.postal_code,
             hd_camera: req.body.hd_camera,
@@ -173,6 +176,19 @@ router.post('/customer', [
         .exists()
         .isLength({ min: 10 })
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/, "i"),
+    check('availibility', 'Veuillez cocher au moins 3 heures de disponibilité')
+        .exists()
+        .custom((value, { req }) => {
+            var availibility = req.body.availibility
+            availibility=availibility.split(',')
+            //remove 0 values from array
+            availibility = availibility.filter(function(e) { return e !== '0' })
+            if(availibility.length >= 6) {
+                return true
+            }else{
+                return false
+            }
+        }),
 
         
 ], async (req, res)=> {
@@ -194,7 +210,7 @@ router.post('/customer', [
             phone: req.body.phone,
             password: req.body.password,
             street_number: req.body.street_number,
-            route: req.body.route,
+            street_address: req.body.street_address,
             locality: req.body.locality,
             postal_code: req.body.postal_code,
             condition1: req.body.condition1,
