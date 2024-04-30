@@ -45,7 +45,14 @@
             }
             })
         })
-        
+        //filter timeslots remove 0 values
+        filtered = timeslots.filter(function (el) {
+            return el != 0;
+        });
+        if(filtered.length<6){
+            alert("Veuillez cocher au moins 3 heures de disponibilité");
+            return;
+        }
         $("#availibility").val(timeslots.join(","));
         $("#calendar").modal('hide');
     }
@@ -254,6 +261,8 @@ $(document).on("selectstart", "#calendar table td", function (e) {
             var place = autocomplete.getPlace();
             var routes = [];
             var street_number = '';
+            var administrative_area_level_3 = '';
+            var locality = '';
             for (var i = 0; i < place.address_components.length; i++) {
                 console.log(place.address_components[i]);
                 var addressType = place.address_components[i].types[0];
@@ -261,7 +270,8 @@ $(document).on("selectstart", "#calendar table td", function (e) {
                     $('#postal_code').val(place.address_components[i].long_name);
                 }
                 if (addressType == 'locality') {
-                    $('#locality').val(place.address_components[i].long_name);
+                    locality = place.address_components[i].long_name;
+                    
                 }
                 if (addressType == 'street_number') {
                     street_number = place.address_components[i].long_name;
@@ -271,33 +281,38 @@ $(document).on("selectstart", "#calendar table td", function (e) {
                     
                 }
                 //sometimes it is not necessary to have street_number
-                if (addressType == 'administrative_area_level_1') {
-                    routes.push(place.address_components[i].long_name);
-                }
-                if (addressType == 'administrative_area_level_2') {
-                    routes.push(place.address_components[i].long_name);
+                // if (addressType == 'administrative_area_level_1') {
+                //     routes.push(place.address_components[i].long_name);
+                // }
+                // if (addressType == 'administrative_area_level_2') {
+                //     routes.push(place.address_components[i].long_name);
 
-                }
+                // }
                 if (addressType == 'administrative_area_level_3') {
-                    routes.push(place.address_components[i].long_name);
+                    administrative_area_level_3 = place.address_components[i].long_name;
+                    
 
                 }
-                if (addressType == 'sublocality_level_1') {
-                    routes.push(place.address_components[i].long_name);
+                // if (addressType == 'sublocality_level_1') {
+                //     routes.push(place.address_components[i].long_name);
 
-                }
-                if (addressType == 'sublocality_level_2') {
-                    routes.push(place.address_components[i].long_name);
+                // }
+                // if (addressType == 'sublocality_level_2') {
+                //     routes.push(place.address_components[i].long_name);
 
-                }
-                if (addressType == 'sublocality_level_3') {
-                    routes.push(place.address_components[i].long_name);
+                // }
+                // if (addressType == 'sublocality_level_3') {
+                //     routes.push(place.address_components[i].long_name);
 
-                }
+                // }
+            }
+            if(locality != ''){
+                $('#locality').val(locality);
+            }else{
+                $('#locality').val(administrative_area_level_3);
             }
             $('#street_number').val(street_number);
-
-            $('#street_address').val(routes.join(', '));
+            // $('#street_address').val(routes.join(', '));
             //set lat and lng
             $('#lat').val(place.geometry.location.lat());
             $('#lng').val(place.geometry.location.lng());

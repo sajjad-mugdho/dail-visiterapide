@@ -326,7 +326,7 @@ class HomeController {
 		try{
 			const { first_name, last_name, email, address, lat, lng,
 				 distance,availibility,
-				phone, password,street_number,street_address,locality,postal_code,hd_camera
+				phone, password,street_number,additional_address,locality,postal_code
 			} = req.body;
 
 			// Create agent
@@ -340,15 +340,14 @@ class HomeController {
 				distance,
 				order_qty:10,
 				availibility,
-				phone,
-				hd_camera
+				phone
 
 			});
 
 
 			await Address.create({
 				"street_number":street_number,
-				"street_address":street_address,
+				"additional_address":additional_address,
 				"locality":locality,
 				"postal_code":postal_code,
 				"user_type":"agent",
@@ -381,7 +380,7 @@ class HomeController {
 	async customerRegister(req, res) {
 		try{
 			const { first_name, last_name, email, address, lat, lng,
-				availibility, phone, password,street_number,street_address,locality,postal_code
+				availibility, phone, password,street_number,additional_address,locality,postal_code
 			} = req.body;
 			
 			// Create customer
@@ -396,7 +395,7 @@ class HomeController {
 
 			await Address.create({
 				"street_number":street_number,
-				"street_address":street_address,
+				"additional_address":additional_address,
 				"locality":locality,
 				"postal_code":postal_code,
 				"user_type":"customer",

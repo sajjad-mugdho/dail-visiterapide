@@ -110,7 +110,7 @@ router.post('/agent', [
             phone: req.body.phone,
             password: req.body.password,
             street_number: req.body.street_number,
-            street_address: req.body.street_address,
+            additional_address: req.body.additional_address,
             locality: req.body.locality,
             postal_code: req.body.postal_code,
             hd_camera: req.body.hd_camera,
@@ -188,19 +188,7 @@ router.post('/customer', [
             return false
         }),
 
-    check('availibility', 'Veuillez cocher au moins 3 heures de disponibilité')
-        .exists()
-        .custom((value, { req }) => {
-            var availibility = req.body.availibility
-            availibility=availibility.split(',')
-            //remove 0 values from array
-            availibility = availibility.filter(function(e) { return e !== '0' })
-            if(availibility.length >= 6) {
-                return true
-            }else{
-                return false
-            }
-        }),
+   
 
         
 ], async (req, res)=> {
@@ -222,7 +210,7 @@ router.post('/customer', [
             phone: req.body.phone,
             password: req.body.password,
             street_number: req.body.street_number,
-            street_address: req.body.street_address,
+            additional_address: req.body.additional_address,
             locality: req.body.locality,
             postal_code: req.body.postal_code,
             condition1: req.body.condition1,

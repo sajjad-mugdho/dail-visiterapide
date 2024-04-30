@@ -56,11 +56,7 @@ const Agent = sequelize.define('agents', {
 		password: {
 			type: DataTypes.STRING,
 			allowNull: true
-		},
-		hd_camera: {	
-			type: DataTypes.INTEGER,
-			allowNull: true
-		},
+		}
 
 
   	});

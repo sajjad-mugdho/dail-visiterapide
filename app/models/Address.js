@@ -11,7 +11,7 @@ const Address = sequelize.define('addresses', {
         street_number:{
             type: DataTypes.STRING
         },
-		street_address:{
+		additional_address:{
 			type: DataTypes.STRING
 		},
 		locality:{

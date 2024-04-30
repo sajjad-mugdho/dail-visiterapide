@@ -1,5 +1,5 @@
 <div class="container">
-    <form class="mt-4" method="post" action="/customer">
+    <form class="mt-4" method="post" action="/customer" autocomplete="off">
         
         <div class="row mt-4 h-100">
             <div class="col-md-12">
@@ -50,13 +50,13 @@
                 
                         <div class="form-group mt-3">
                             <label for="email">E-mail<sup>*</sup></label>
-                            <input required  type="email" class="form-control" name="email" id="email"  placeholder="Entrez l'e-mail" value="<%= typeof email != 'undefined' ? email : '' %>">
+                            <input required autocomplete="new-password"  type="email" class="form-control" name="email" id="email"  placeholder="Entrez l'e-mail" value="<%= typeof email != 'undefined' ? email : '' %>">
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mt-3">
                                     <label for="password">Mot de passe<sup>*</sup></label>
-                                    <input  autocomplete="off" required  type="password" class="form-control" name="password" id="password"  placeholder="Entrer le mot de passe" value="<%= typeof password != 'undefined' ? password : '' %>">
+                                    <input  autocomplete="new-password" required  type="password" class="form-control" name="password" id="password"  placeholder="Entrer le mot de passe" value="<%= typeof password != 'undefined' ? password : '' %>">
                                     <div class="d-flex align-items-center mt-2">
                                         <input id="show-password" class="me-2" type="checkbox" onclick="var x = document.getElementById('password'); if (x.type === 'password') { x.type = 'text'; } else { x.type = 'password'; }">
                                         <label for="show-password">Afficher le mot de passe</label>
@@ -102,7 +102,7 @@
                 </div> 
                 <div class="form-group mt-3">
                     <label>Complément d’adresse</label>
-                    <input type="text" class="form-control" id="street_address" placeholder="Entrez les informations nécessaires pour accéder à votre habitation (facultatif)" name="street_address" value="<%= typeof street_address != 'undefined' ? street_address : '' %>"> <!-- street_address -->
+                    <input type="text" class="form-control" id="additional_address" placeholder="Entrez les informations nécessaires pour accéder à votre habitation (facultatif)" name="additional_address" value="<%= typeof additional_address != 'undefined' ? additional_address : '' %>"> <!-- additional_address -->
                 </div>
                 <div class="form-group mt-3">
                     <label>Code postal</label>
@@ -142,6 +142,7 @@
     $(document).ready(function() {
         // Attach maskPhoneNumber function to the input field
         document.getElementById('phone').addEventListener('input', maskPhoneNumber);
+        
     });
     
 </script>
