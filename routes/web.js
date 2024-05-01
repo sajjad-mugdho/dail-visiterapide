@@ -59,7 +59,7 @@ router.post('/agent', [
         .exists()
         .isLength({ min: 10 })
         .custom((value, { req }) => {
-            if(value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{10,}$/) !== null) {
+            if(value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{10,}$/) !== null) {
                 return true
             }
             return false
@@ -182,7 +182,8 @@ router.post('/customer', [
         .isLength({ min: 10 })
         //min 1 small character 1 capital character 1 number and 1 special character
         .custom((value, { req }) => {
-            if(value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{10,}$/) !== null) {
+            if(value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])[A-Za-z\d!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{10,}$/) !== null) {
+
                 return true
             }
             return false
