@@ -39,3 +39,5 @@ sequelize
   .catch((err) => {
     console.log(err);
   });
+
+// europe-west9-docker.pkg.dev/fastloc2023/visiterapide
