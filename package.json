@@ -20,7 +20,7 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.1",
     "express-validator": "^6.9.2",
-    "mysql2": "^2.1.0",
+    "mysql2": "^2.3.3",
     "sequelize": "^6.3.4"
   }
 }
