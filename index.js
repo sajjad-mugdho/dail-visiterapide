@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // set views
+app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.use(express.static(__dirname + "/public"));
